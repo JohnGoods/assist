@@ -2,3 +2,4 @@
 
 在OD里面找出来的
 mov eax,dword ptr ds:[0x1005194]
+mov eax,dword ptr ds:[0x1005194]
