@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(CÉ¨À×¸¨ÖúDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_READ_FLAG, &CÉ¨À×¸¨ÖúDlg::OnBnClickedButtonReadFlag)
 	ON_BN_CLICKED(IDC_BUTTON_GAOJI_GAME, &CÉ¨À×¸¨ÖúDlg::OnBnClickedButtonGaojiGame)
 	ON_BN_CLICKED(IDC_BUTTON_CUSTOM, &CÉ¨À×¸¨ÖúDlg::OnBnClickedButtonCustom)
+	ON_BN_CLICKED(IDC_BUTTONC_CLICK, &CÉ¨À×¸¨ÖúDlg::OnBnClickedButtoncClick)
 END_MESSAGE_MAP()
 
 
@@ -210,4 +211,19 @@ void CÉ¨À×¸¨ÖúDlg::OnBnClickedButtonGaojiGame()
 void CÉ¨À×¸¨ÖúDlg::OnBnClickedButtonCustom()
 {
 	this->OnBaseOpenMenu(0x20C);
+}
+
+//Ä£Äâµ¥»÷
+void CÉ¨À×¸¨ÖúDlg::OnBnClickedButtoncClick()
+{
+	WORD yx[2];
+	HWND h = ::FindWindow(NULL, L"É¨À×");
+	if (h == 0){
+		::MessageBox(0, L"É¨À×Ã»´ò¿ª", 0, MB_OK);
+		return;
+	}
+	yx[0] = 21;
+	yx[1] = 62;
+	::SendMessage(h, WM_LBUTTONDOWN, 1, *(int*)yx);
+	::SendMessage(h, WM_LBUTTONUP, 0, *(int*)yx);
 }

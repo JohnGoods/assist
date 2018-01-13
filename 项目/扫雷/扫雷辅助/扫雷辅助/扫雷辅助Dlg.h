@@ -37,4 +37,5 @@ public:
 	afx_msg void OnBnClickedButtonGaojiGame();
 	void OnBaseOpenMenu(int ID);
 	afx_msg void OnBnClickedButtonCustom();
+	afx_msg void OnBnClickedButtoncClick();
 };
