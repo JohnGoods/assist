@@ -11,6 +11,29 @@
 #define new DEBUG_NEW
 #endif
 
+//菜单类ID
+//#define start 0x208
+#define diji 0x209
+#define zhongji 0x20A
+#define gaoji 0x20B
+#define zidingyi 0x20C
+//#define 标记 20F
+//#define 颜色 211
+//#define 声音 20E
+//#define 英雄榜 210
+//#define 退出 200
+//#define 目录 24E
+//#define 帮助主题 24F
+//#define 使用帮助 250
+//#define 关于扫雷 251
+
+//CALL
+#define qipanCall  0x1005361	//棋盘call
+#define heightCall  0x1005338	//高度call
+#define biaozhiCall  0x1005194	//标志旗帜call
+
+#define gameStartX  21	//初始X坐标
+#define gameStartY  62	//初始Y坐标
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
@@ -50,6 +73,7 @@ END_MESSAGE_MAP()
 C扫雷辅助Dlg::C扫雷辅助Dlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(C扫雷辅助Dlg::IDD, pParent)
 	, m_editBase(0)
+	, m_gameData(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -58,6 +82,7 @@ void C扫雷辅助Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT1, m_editBase);
+	DDX_Text(pDX, IDC_EDIT2, m_gameData);
 }
 
 BEGIN_MESSAGE_MAP(C扫雷辅助Dlg, CDialogEx)
@@ -70,6 +95,8 @@ BEGIN_MESSAGE_MAP(C扫雷辅助Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_GAOJI_GAME, &C扫雷辅助Dlg::OnBnClickedButtonGaojiGame)
 	ON_BN_CLICKED(IDC_BUTTON_CUSTOM, &C扫雷辅助Dlg::OnBnClickedButtonCustom)
 	ON_BN_CLICKED(IDC_BUTTONC_CLICK, &C扫雷辅助Dlg::OnBnClickedButtoncClick)
+	ON_BN_CLICKED(IDC_BUTTON_READ, &C扫雷辅助Dlg::OnBnClickedButtonRead)
+	ON_BN_CLICKED(IDC_BUTTON_ALL_KILL, &C扫雷辅助Dlg::OnBnClickedButtonAllKill)
 END_MESSAGE_MAP()
 
 
@@ -166,22 +193,22 @@ void C扫雷辅助Dlg::OnBaseOpenMenu(int ID)
 		::MessageBox(0, L"扫雷没打开", 0, MB_OK);
 		return;
 	}
-	::SendMessage(h, WM_COMMAND, ID, 0);
+	::PostMessage(h, WM_COMMAND, ID, 0);
 }
 
 //进行初级游戏
 void C扫雷辅助Dlg::OnBnClickedButtonChujiGame()
 {
-	this->OnBaseOpenMenu(0x209);
+	this->OnBaseOpenMenu(diji);
 }
 
 //进行中级游戏
 void C扫雷辅助Dlg::OnBnClickedButtonZhongjiGame()
 {
-	this->OnBaseOpenMenu(0x20A);
+	this->OnBaseOpenMenu(zhongji);
 }
 
-//读取数据
+//读取标记数据
 void C扫雷辅助Dlg::OnBnClickedButtonReadFlag()
 {
 	HWND h = ::FindWindow(NULL, L"扫雷");
@@ -197,20 +224,20 @@ void C扫雷辅助Dlg::OnBnClickedButtonReadFlag()
 		::MessageBox(0, L"打开进程出错", 0, MB_OK);
 		return;
 	}
-	ReadProcessMemory(hp, (LPCVOID)0x1005194, &m_editBase, 4, &pid);	//根据进程句柄读入该进程的某个内存空间
+	ReadProcessMemory(hp, (LPCVOID)biaozhiCall, &m_editBase, 4, &pid);	//根据进程句柄读入该进程的某个内存空间
 	UpdateData(false);
 }
 
 //高级游戏
 void C扫雷辅助Dlg::OnBnClickedButtonGaojiGame()
 {
-	this->OnBaseOpenMenu(0x20B);
+	this->OnBaseOpenMenu(gaoji);
 }
 
 //自定义
 void C扫雷辅助Dlg::OnBnClickedButtonCustom()
 {
-	this->OnBaseOpenMenu(0x20C);
+	this->OnBaseOpenMenu(zidingyi);
 }
 
 //模拟单击
@@ -226,4 +253,91 @@ void C扫雷辅助Dlg::OnBnClickedButtoncClick()
 	yx[1] = 62;
 	::SendMessage(h, WM_LBUTTONDOWN, 1, *(int*)yx);
 	::SendMessage(h, WM_LBUTTONUP, 0, *(int*)yx);
+}
+
+unsigned char gamebase[24][32]; //ReadProcessMemory 棋盘数据缓冲区
+
+//读取数据
+void C扫雷辅助Dlg::OnBnClickedButtonRead()
+{
+	HWND h = ::FindWindow(NULL, L"扫雷");
+	if (h == 0)
+	{
+		::MessageBox(0, L"游戏未打开", 0, MB_OK);
+		return;
+	}
+	DWORD pid;
+	GetWindowThreadProcessId(h, &pid);
+	HANDLE hp = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
+	//
+	if (hp == NULL)
+	{
+		::MessageBox(0, L"打开进程出错", 0, MB_OK);
+		return;
+	}
+	//读取数据 
+	ReadProcessMemory(hp, (LPCVOID)qipanCall, gamebase, 32 * 24, &pid);
+	int high;
+	//读取高度
+	ReadProcessMemory(hp, (void*)heightCall, &high, 4, &pid);
+	m_gameData.Empty();
+	CString s1;
+	//WORD yx[2];
+	for (int y = 0; y < high; y++){
+		for (int x = 0; x < 32; x++){
+			s1.Format(L"%x,", gamebase[y][x]);
+			if (gamebase[y][x] == 0x10)
+			{
+				break;
+			}
+			if (wcslen(s1) == 2)
+			{
+				s1 = L"0" + s1;
+			}
+			m_gameData += s1;
+		}
+		m_gameData +="\r\n";
+	}
+	UpdateData(false);
+}
+
+
+void C扫雷辅助Dlg::OnBnClickedButtonAllKill()
+{
+	HWND h = ::FindWindow(NULL, L"扫雷");
+	if (h == 0)
+	{
+		::MessageBox(0, L"游戏未打开", 0, MB_OK);
+		return;
+	}
+	DWORD pid;
+	GetWindowThreadProcessId(h, &pid);
+	HANDLE hp = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
+	//
+	if (hp == NULL)
+	{
+		::MessageBox(0, L"打开进程出错", 0, MB_OK);
+		return;
+	}
+	//读取数据 
+	ReadProcessMemory(hp, (LPCVOID)qipanCall, gamebase, 32 * 24, &pid);
+	int high;
+	//读取高度
+	ReadProcessMemory(hp, (void*)heightCall, &high, 4, &pid);
+	CString s1;
+	WORD yx[2];
+	for (int y = 0; y < high; y++){
+		for (int x = 0; x < 32; x++){
+			if (gamebase[y][x] != 0x8f)
+			{
+				//计算雷所在位置坐标
+				yx[0] = gameStartX + x * 16;
+				yx[1] = gameStartY + y * 16;
+				//模拟鼠标单击
+				::PostMessage(h, WM_LBUTTONDOWN, 1, *(int*)yx);
+				::PostMessage(h, WM_LBUTTONUP, 0, *(int*)yx);
+			}
+		}
+	}
+	UpdateData(false);
 }

@@ -38,4 +38,7 @@ public:
 	void OnBaseOpenMenu(int ID);
 	afx_msg void OnBnClickedButtonCustom();
 	afx_msg void OnBnClickedButtoncClick();
+	afx_msg void OnBnClickedButtonRead();
+	CString m_gameData;
+	afx_msg void OnBnClickedButtonAllKill();
 };
