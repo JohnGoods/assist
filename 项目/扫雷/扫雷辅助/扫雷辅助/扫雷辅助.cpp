@@ -11,7 +11,7 @@
 #endif
 
 
-// CÉ¨À×¸¨ÖúApp
+// CÉ¨À×¸¨Öú
 
 BEGIN_MESSAGE_MAP(CÉ¨À×¸¨ÖúApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
