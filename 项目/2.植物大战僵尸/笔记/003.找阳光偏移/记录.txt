@@ -1,0 +1,17 @@
+1.dd 255D6270  CEÕÒµ½µÄµØÖ·
+
+2.?edx+0x5578
+004276D0  /$  E8 CBFEFFFF   call PlantsVs.004275A0
+004276D5  |.  0382 78550000 add eax,dword ptr ds:[edx+0x5578] 
+004276DB  |.  394424 04     cmp dword ptr ss:[esp+0x4],eax
+
+3.[ebp+0x4] = 255D0CF8
+0049DFA2  |> \8B55 04       mov edx,dword ptr ss:[ebp+0x4]
+
+4.[edi-0x8+4]+5578
+0049F25F  |.  8D57 F8       |lea edx,dword ptr ds:[edi-0x8]
+
+5.dd [arg.11-0x8+4]+5578     !!!edi = 247516B0
+0049F247  |.  8D7D 30       lea edi,[arg.11]                         ;  dd [arg.11-0x8+4]+5578
+
+[1BC0B1A8-0x8+4]+5578
