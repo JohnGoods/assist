@@ -11,7 +11,24 @@
 4.[edi-0x8+4]+5578
 0049F25F  |.  8D57 F8       |lea edx,dword ptr ds:[edi-0x8]
 
-5.dd [arg.11-0x8+4]+5578     !!!edi = 247516B0
+5.dd [arg.11-0x8+4]+5578    
 0049F247  |.  8D7D 30       lea edi,[arg.11]                         ;  dd [arg.11-0x8+4]+5578
 
-[1BC0B1A8-0x8+4]+5578
+dd [[esp+4]+30-0x8+4]+5578    27B746B0
+
+6.[[esi+0x8+4]+30-0x8+4]+5578 30-0x8+4 = 30+8+4 =44 =2c
+
+
+7.dd [ecx+2c]+5578 
+00425CE2  |.  D946 08       fld dword ptr ds:[esi+0x8]               ;  dd [ecx+2c]+5578
+
+
+9.dd [[eax+0x15c]+2c]+5578 
+
+00427E9F      CC            int3                                     ;  eax = 25759020
+00427EA0  /$  8B88 5C010000 mov ecx,dword ptr ds:[eax+0x15C]         ;  dd [[eax+0x15c]+2c]+5578
+
+
+10.dd [[[[755E0C]+0x868]+0x15c]+2c]+5578 
+00427A66  |.  83B9 68080000>cmp dword ptr ds:[ecx+0x868],0x0
+

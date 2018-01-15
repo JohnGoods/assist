@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="24">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"阳光原始基址"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <VariableType>4 Bytes</VariableType>
+      <Address>PlantsVsZombies.exe+355E0C</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>6</ID>
+      <Description>"阳光基址+偏移值"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>5578</Offset>
+        <Offset>2c</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
