@@ -2,11 +2,11 @@
 <CheatTable CheatEngineTableVersion="24">
   <CheatEntries>
     <CheatEntry>
-      <ID>2</ID>
-      <Description>"阳光原始基址"</Description>
-      <ShowAsHex>1</ShowAsHex>
+      <ID>7</ID>
+      <Description>"无描述"</Description>
+      <LastState Value="60013" RealAddress="103FEF48"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>PlantsVsZombies.exe+355E0C</Address>
+      <Address>103FEF48</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>6</ID>
@@ -18,6 +18,33 @@
         <Offset>2c</Offset>
         <Offset>0x15c</Offset>
         <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"阳光原始基址"</Description>
+      <LastState Value="0232A6F0" RealAddress="00755E0C"/>
+      <ShowAsHex>1</ShowAsHex>
+      <VariableType>4 Bytes</VariableType>
+      <Address>PlantsVsZombies.exe+355E0C</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>9</ID>
+      <Description>"金币原始基址"</Description>
+      <LastState Value="0232A6F0" RealAddress="00755E0C"/>
+      <ShowAsHex>1</ShowAsHex>
+      <VariableType>4 Bytes</VariableType>
+      <Address>PlantsVsZombies.exe+355E0C</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>10</ID>
+      <Description>"金币基址+偏移值"</Description>
+      <LastState Value="60013" RealAddress="103FEF48"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>50</Offset>
+        <Offset>950</Offset>
       </Offsets>
     </CheatEntry>
   </CheatEntries>
