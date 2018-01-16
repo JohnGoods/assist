@@ -1,0 +1,26 @@
+---------------------向日葵
+PlantsVsZombies.exe+9DDDE - 56                    - push esi
+PlantsVsZombies.exe+9DDDF - 57                    - push edi
+PlantsVsZombies.exe+9DDE0 - 75 24                 - jne PlantsVsZombies.exe+9DE06
+PlantsVsZombies.exe+9DDE2 - 83 7D 28 00           - cmp dword ptr [ebp+28],00 { 0 }
+PlantsVsZombies.exe+9DDE6 - 75 04                 - jne PlantsVsZombies.exe+9DDEC
+PlantsVsZombies.exe+9DDE8 - D9E8                  - fld1 
+PlantsVsZombies.exe+9DDEA - EB 16                 - jmp PlantsVsZombies.exe+9DE02
+PlantsVsZombies.exe+9DDEC - 8B 45 28              - mov eax,[ebp+28]
+PlantsVsZombies.exe+9DDEF - 89 44 24 18           - mov [esp+18],eax
+PlantsVsZombies.exe+9DDF3 - 2B 45 24              - sub eax,[ebp+24]
+PlantsVsZombies.exe+9DDF6 - 89 44 24 10           - mov [esp+10],eax
+PlantsVsZombies.exe+9DDFA - DB 44 24 10           - fild dword ptr [esp+10]
+PlantsVsZombies.exe+9DDFE - DA 74 24 18           - fidiv dword ptr [esp+18]
+PlantsVsZombies.exe+9DE02 - D9 5C 24 14           - fstp dword ptr [esp+14]
+PlantsVsZombies.exe+9DE06 - 83 7D 3C 00           - cmp dword ptr [ebp+3C],00 { 0 }
+PlantsVsZombies.exe+9DE0A - 0F8E EF000000         - jng PlantsVsZombies.exe+9DEFF
+
+dd 00400000+9DDE2		//正确地址
+
+279F3098
+279F3094
+279F31D8
+
+0049DDB0  /$  6A FF                           push -0x1                                                               ;  dd [esp-0x98+0xb0]+0x28
+
