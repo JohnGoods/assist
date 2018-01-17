@@ -25,3 +25,5 @@ dd 00400000+9DDE2		//ÕýÈ·µØÖ·
 0049DDB0  /$  6A FF                           push -0x1                                                               ;  dd [esp-0x98+0xb0]+0x28
 
 1. dd [esp+0xB8]=0x24
+
+0049F26F
