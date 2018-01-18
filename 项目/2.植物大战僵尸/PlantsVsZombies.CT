@@ -2,15 +2,8 @@
 <CheatTable CheatEngineTableVersion="24">
   <CheatEntries>
     <CheatEntry>
-      <ID>7</ID>
-      <Description>"无描述"</Description>
-      <LastState Value="60013" RealAddress="103FEF48"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>103FEF48</Address>
-    </CheatEntry>
-    <CheatEntry>
       <ID>6</ID>
-      <Description>"阳光基址+偏移值"</Description>
+      <Description Activated="1">"阳光基址+偏移值"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -23,7 +16,7 @@
     <CheatEntry>
       <ID>2</ID>
       <Description>"阳光原始基址"</Description>
-      <LastState Value="0232A6F0" RealAddress="00755E0C"/>
+      <LastState Value="0222A6F0" RealAddress="00755E0C"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>4 Bytes</VariableType>
       <Address>PlantsVsZombies.exe+355E0C</Address>
@@ -31,7 +24,7 @@
     <CheatEntry>
       <ID>9</ID>
       <Description>"金币原始基址"</Description>
-      <LastState Value="0232A6F0" RealAddress="00755E0C"/>
+      <LastState Value="0222A6F0" RealAddress="00755E0C"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>4 Bytes</VariableType>
       <Address>PlantsVsZombies.exe+355E0C</Address>
@@ -39,12 +32,243 @@
     <CheatEntry>
       <ID>10</ID>
       <Description>"金币基址+偏移值"</Description>
-      <LastState Value="60013" RealAddress="103FEF48"/>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
         <Offset>50</Offset>
         <Offset>950</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>16</ID>
+      <Description>"过程(植物CD) 4C = 冷却时间 50 = 上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755e0c</Address>
+      <Offsets>
+        <Offset>4C</Offset>
+        <Offset>50*0</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>15</ID>
+      <Description>"第一个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>4c</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>18</ID>
+      <Description>"第二个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>9C</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>19</ID>
+      <Description>"第三个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>EC</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>20</ID>
+      <Description>"第四个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>13C</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>21</ID>
+      <Description>"第五个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>18C</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>22</ID>
+      <Description>"第六个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>1DC</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>23</ID>
+      <Description>"第七个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>22C</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>24</ID>
+      <Description>"第八个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>27C</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>25</ID>
+      <Description>"第九个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>2CC</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>26</ID>
+      <Description>"第十个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>31C</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>14</ID>
+      <Description Activated="1">"第一个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>50</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>17</ID>
+      <Description Activated="1">"第二个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>A0</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>27</ID>
+      <Description Activated="1">"第三个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>F0</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>35</ID>
+      <Description Activated="1">"第四个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>140</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>34</ID>
+      <Description Activated="1">"第五个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>190</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>33</ID>
+      <Description Activated="1">"第六个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>1E0</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>32</ID>
+      <Description Activated="1">"第七个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>230</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>31</ID>
+      <Description Activated="1">"第八个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>280</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>30</ID>
+      <Description Activated="1">"第九个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>2D0</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>29</ID>
+      <Description Activated="1">"第十个上限"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>320</Offset>
+        <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
       </Offsets>
     </CheatEntry>
   </CheatEntries>
