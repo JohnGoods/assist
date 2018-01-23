@@ -1,3 +1,5 @@
+CE找出来的内存访问
+0049E7D1
 选择
 PlantsVsZombies.exe+9E7D1 - 89 48 28              - mov [eax+28],ecx
 PlantsVsZombies.exe+9E7D4 - 8B 53 04              - mov edx,[ebx+04]
@@ -8,3 +10,13 @@ PlantsVsZombies.exe+1E365 - 89 71 28              - mov [ecx+28],esi
 PlantsVsZombies.exe+1E368 - 8B 97 50010000        - mov edx,[edi+00000150]
 PlantsVsZombies.exe+1E36E - 89 5A 30              - mov [edx+30],ebx
 PlantsVsZombies.exe+1E371 - 8B 87 50010000        - mov eax,[edi+00000150]
+
+1.
+0018FBFB -- dd ebp+0x34
+2.
+194AA084  00000000	--dd eax+0x34
+3.
+0041E1D3  dd [esp+10]+0x34	dd [0018FBA8+10]+0x34
+
+dd [[[0018FBA8+10]+24]+10]+0x34
+dd [[[0018FBA8+10]+174]+10]+0x34
