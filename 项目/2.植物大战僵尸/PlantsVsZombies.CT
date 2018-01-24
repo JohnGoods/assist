@@ -3,7 +3,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>6</ID>
-      <Description Activated="1">"阳光基址+偏移值"</Description>
+      <Description>"阳光基址+偏移值"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -16,7 +16,6 @@
     <CheatEntry>
       <ID>2</ID>
       <Description>"阳光原始基址"</Description>
-      <LastState Value="0222A6F0" RealAddress="00755E0C"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>4 Bytes</VariableType>
       <Address>PlantsVsZombies.exe+355E0C</Address>
@@ -24,7 +23,6 @@
     <CheatEntry>
       <ID>9</ID>
       <Description>"金币原始基址"</Description>
-      <LastState Value="0222A6F0" RealAddress="00755E0C"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>4 Bytes</VariableType>
       <Address>PlantsVsZombies.exe+355E0C</Address>
@@ -96,17 +94,6 @@
       </Offsets>
     </CheatEntry>
     <CheatEntry>
-      <ID>21</ID>
-      <Description>"第五个CD"</Description>
-      <VariableType>4 Bytes</VariableType>
-      <Address>755E0C</Address>
-      <Offsets>
-        <Offset>18C</Offset>
-        <Offset>0x15c</Offset>
-        <Offset>0x868</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
       <ID>22</ID>
       <Description>"第六个CD"</Description>
       <VariableType>4 Bytes</VariableType>
@@ -163,7 +150,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>14</ID>
-      <Description Activated="1">"第一个上限"</Description>
+      <Description>"第一个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -174,7 +161,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>17</ID>
-      <Description Activated="1">"第二个上限"</Description>
+      <Description>"第二个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -184,8 +171,19 @@
       </Offsets>
     </CheatEntry>
     <CheatEntry>
+      <ID>21</ID>
+      <Description>"第五个CD"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>18C</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
       <ID>27</ID>
-      <Description Activated="1">"第三个上限"</Description>
+      <Description>"第三个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -196,7 +194,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>35</ID>
-      <Description Activated="1">"第四个上限"</Description>
+      <Description>"第四个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -207,7 +205,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>34</ID>
-      <Description Activated="1">"第五个上限"</Description>
+      <Description>"第五个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -218,7 +216,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>33</ID>
-      <Description Activated="1">"第六个上限"</Description>
+      <Description>"第六个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -229,7 +227,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>32</ID>
-      <Description Activated="1">"第七个上限"</Description>
+      <Description>"第七个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -240,7 +238,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>31</ID>
-      <Description Activated="1">"第八个上限"</Description>
+      <Description>"第八个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -251,7 +249,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>30</ID>
-      <Description Activated="1">"第九个上限"</Description>
+      <Description>"第九个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
@@ -262,12 +260,38 @@
     </CheatEntry>
     <CheatEntry>
       <ID>29</ID>
-      <Description Activated="1">"第十个上限"</Description>
+      <Description>"第十个上限"</Description>
       <VariableType>4 Bytes</VariableType>
       <Address>755E0C</Address>
       <Offsets>
         <Offset>320</Offset>
         <Offset>0x15C</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>36</ID>
+      <Description>"选择植物"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>0x28</Offset>
+        <Offset>0x150</Offset>
+        <Offset>2c</Offset>
+        <Offset>0x15c</Offset>
+        <Offset>0x868</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>38</ID>
+      <Description>"放下植物"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>755E0C</Address>
+      <Offsets>
+        <Offset>0x30</Offset>
+        <Offset>0x150</Offset>
+        <Offset>2c</Offset>
+        <Offset>0x15c</Offset>
         <Offset>0x868</Offset>
       </Offsets>
     </CheatEntry>
