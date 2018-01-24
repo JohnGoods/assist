@@ -12,11 +12,20 @@ PlantsVsZombies.exe+1E36E - 89 5A 30              - mov [edx+30],ebx
 PlantsVsZombies.exe+1E371 - 8B 87 50010000        - mov eax,[edi+00000150]
 
 1.
-0018FBFB -- dd ebp+0x34
-2.
-194AA084  00000000	--dd eax+0x34
-3.
-0041E1D3  dd [esp+10]+0x34	dd [0018FBA8+10]+0x34
+0041E1D3  |.  8B4424 10     mov eax,dword ptr ss:[esp+0x10]          ;  dd [[[esp+0x10]+0x4]+0x150]+28; Case 4 of switch 0041E1CE
+0041E1D7  |.  8B48 04       mov ecx,dword ptr ds:[eax+0x4]
+0041E1DA  |.  80B9 7C010000>cmp byte ptr ds:[ecx+0x17C],0x0
+0041E1E1  |.  0F85 E8000000 jnz PlantsVs.0041E2CF
+0041E1E7  |.  50            push eax                                 ;  dd [[eax+0x4]+0x150]+28
+0041E1E8  |.  E8 43FF0700   call PlantsVs.0049E130
+0041E1ED  |.  E8 1EC0FFFF   call PlantsVs.0041A210                   ;  dd [[1BCBAB90+0x4]+0x150]+28
 
-dd [[[0018FBA8+10]+24]+10]+0x34
-dd [[[0018FBA8+10]+174]+10]+0x34
+2.0018FBB8
+
+3.0041DF35  |.  E8 56F80000   call PlantsVs.0042D790                   ;  esp+24 esp+10 ½øÐÐ²Ù×÷
+
+
+4.
+004264E0  /$  8B8A A4000000 mov ecx,dword ptr ds:[edx+0xA4]          ;  dd [[[esp+44]+0x4]+0x150]+28
+
+
