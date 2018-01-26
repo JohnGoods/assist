@@ -1,0 +1,38 @@
+1 00409E7F1
+PlantsVsZombies.exe+9E7F1 - 89 78 30              - mov [eax+30],edi
+1
+PlantsVsZombies.exe+1E36E - 89 5A 30              - mov [edx+30],ebx
+
+
+2.
+用注入软件注入 即可种植物
+mov eax,dword ptr[755E0C]
+mov eax,[eax+0x868]
+mov eax,[eax+0x15c]
+add eax,28
+mov ecx,50
+imul ecx,ecx,4
+add eax,ecx
+mov ebx,eax
+mov edx,dword ptr ds:[ebx+0x4]
+mov eax,dword ptr ds:[edx+0x150]
+mov ecx,dword ptr ds:[ebx+0x34]
+mov dword ptr ds:[eax+0x28],29    //(29)是植物的ID
+mov edx,dword ptr ds:[ebx+0x4]
+mov eax,dword ptr ds:[edx+0x150]
+mov ecx,dword ptr ds:[ebx+0x38]
+mov dword ptr ds:[eax+0x2C],ecx
+mov edx,dword ptr ds:[ebx+0x4]
+mov eax,dword ptr ds:[edx+0x150]
+mov edi,0x1
+mov dword ptr ds:[eax+0x30],edi         
+mov ecx,dword ptr ds:[ebx+0x4]
+mov edx,dword ptr ds:[ecx+0x150]
+mov eax,dword ptr ds:[ebx+0x2C]
+mov dword ptr ds:[edx+0x24],eax
+mov ecx,dword ptr ds:[ebx]
+mov edx,dword ptr ds:[ecx]
+mov eax,dword ptr ds:[0x7533E0]
+mov edx,dword ptr ds:[edx+0xD8]
+push eax
+call edx
