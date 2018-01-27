@@ -99,6 +99,32 @@ BEGIN_MESSAGE_MAP(C扫雷辅助Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ALL_KILL, &C扫雷辅助Dlg::OnBnClickedButtonAllKill)
 END_MESSAGE_MAP()
 
+//提升权限
+bool enableDebugPriv()
+{
+	HANDLE hToken;
+	LUID sedebugnameValue;
+	TOKEN_PRIVILEGES tkp;
+
+	if (!OpenProcessToken(GetCurrentProcess(),
+		TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
+		return false;
+	}
+	if (!LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &sedebugnameValue))
+	{
+		CloseHandle(hToken);
+		return false;
+	}
+	tkp.PrivilegeCount = 1;
+	tkp.Privileges[0].Luid = sedebugnameValue;
+	tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+	if (!AdjustTokenPrivileges(hToken, FALSE, &tkp, sizeof(tkp), NULL, NULL))
+	{
+		CloseHandle(hToken);
+		return false;
+	}
+	return true;
+}
 
 // C扫雷辅助Dlg 消息处理程序
 
@@ -218,6 +244,7 @@ void C扫雷辅助Dlg::OnBnClickedButtonReadFlag()
 	}
 	DWORD pid;
 	GetWindowThreadProcessId(h, &pid); //获取进程ID并保存
+	enableDebugPriv();
 	HANDLE hp = OpenProcess(PROCESS_ALL_ACCESS, false, pid);	//打开一个已存在的进程对象
 	if (hp == NULL)
 	{
@@ -268,6 +295,7 @@ void C扫雷辅助Dlg::OnBnClickedButtonRead()
 	}
 	DWORD pid;
 	GetWindowThreadProcessId(h, &pid);
+	enableDebugPriv();
 	HANDLE hp = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
 	//
 	if (hp == NULL)
@@ -312,6 +340,7 @@ void C扫雷辅助Dlg::OnBnClickedButtonAllKill()
 	}
 	DWORD pid;
 	GetWindowThreadProcessId(h, &pid);
+	enableDebugPriv();
 	HANDLE hp = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
 	//
 	if (hp == NULL)
