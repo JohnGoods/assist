@@ -37,4 +37,7 @@ public:
 	UINT m_edit_money;
 	afx_msg void OnEnChangeEditMoney();
 	afx_msg void OnBnClickedButtonMoney();
+	UINT m_edit_sun;
+	afx_msg void OnEnChangeEditSun();
+	afx_msg void OnBnClickedButtonSun();
 };

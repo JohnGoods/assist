@@ -53,6 +53,7 @@ C植物大战僵尸辅助Dlg::C植物大战僵尸辅助Dlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(C植物大战僵尸辅助Dlg::IDD, pParent)
 	, m_b_CD(FALSE)
 	, m_edit_money(0)
+	, m_edit_sun(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -62,6 +63,7 @@ void C植物大战僵尸辅助Dlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_CHECK_CD, m_b_CD);
 	DDX_Text(pDX, IDC_EDIT_MONEY, m_edit_money);
+	DDX_Text(pDX, IDC_EDIT_SUN, m_edit_sun);
 }
 
 BEGIN_MESSAGE_MAP(C植物大战僵尸辅助Dlg, CDialogEx)
@@ -73,6 +75,8 @@ BEGIN_MESSAGE_MAP(C植物大战僵尸辅助Dlg, CDialogEx)
 ON_WM_TIMER()
 ON_EN_CHANGE(IDC_EDIT_MONEY, &C植物大战僵尸辅助Dlg::OnEnChangeEditMoney)
 ON_BN_CLICKED(IDC_BUTTON_MONEY, &C植物大战僵尸辅助Dlg::OnBnClickedButtonMoney)
+ON_EN_CHANGE(IDC_EDIT_SUN, &C植物大战僵尸辅助Dlg::OnEnChangeEditSun)
+ON_BN_CLICKED(IDC_BUTTON_SUN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonSun)
 END_MESSAGE_MAP()
 
 
@@ -110,6 +114,7 @@ BOOL C植物大战僵尸辅助Dlg::OnInitDialog()
 	// TODO:  在此添加额外的初始化代码
 	SetTimer(1, 500, NULL);
 	SetTimer(2, 1000, NULL);
+	SetTimer(3, 1000, NULL);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -223,14 +228,16 @@ void C植物大战僵尸辅助Dlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	CDialogEx::OnTimer(nIDEvent);
+	HANDLE hp = GetGameProcessHandle();
+	DWORD buf = 0, byread, bywrite;
 	switch (nIDEvent)
 	{
-	case 1:     
+	case 1:
 		if (m_b_CD)	//勾选去了CD
 		{   //禁用掉冷却时间
 			for (int i = 0; i < 10; i++){
-				HANDLE hp = GetGameProcessHandle();
-				DWORD buf = 0, byread, bywrite;
+				/*HANDLE hp = GetGameProcessHandle();
+				DWORD buf = 0, byread, bywrite;*/
 				ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
 				ReadProcessMemory(hp, (PVOID)(buf + 0x868), &buf, sizeof(buf), &byread);
 				ReadProcessMemory(hp, (PVOID)(buf + 0x15C), &buf, sizeof(buf), &byread);
@@ -239,47 +246,57 @@ void C植物大战僵尸辅助Dlg::OnTimer(UINT_PTR nIDEvent)
 				deviation = 0x50 + 0x50 * i;
 				/*if (i == 0){
 					deviation = 0x50;
-				}
-				else if (i == 1){
+					}
+					else if (i == 1){
 					deviation = 0xA0;
-				}
-				else if (i == 2){
+					}
+					else if (i == 2){
 					deviation = 0xF0;
-				}
-				else if (i == 3){
+					}
+					else if (i == 3){
 					deviation = 0x140;
-				}
-				else if (i == 4){
+					}
+					else if (i == 4){
 					deviation = 0x190;
-				}
-				else if (i == 5){
+					}
+					else if (i == 5){
 					deviation = 0x1E0;
-				}
-				else if (i == 6){
+					}
+					else if (i == 6){
 					deviation = 0x230;
-				}
-				else if (i == 7){
+					}
+					else if (i == 7){
 					deviation = 0x280;
-				}
-				else if (i == 8){
+					}
+					else if (i == 8){
 					deviation = 0x2D0;
-				}
-				else if (i == 9){
+					}
+					else if (i == 9){
 					deviation = 0x320;
-				}*/
+					}*/
 				WriteProcessMemory(hp, (PVOID)(buf + deviation), &tmp, sizeof(buf), &byread);
 			}
 		}
 		break;
-		case 2:
-			HANDLE hp = GetGameProcessHandle();
-			DWORD buf = 0, byread, bywrite;
-			ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
-			ReadProcessMemory(hp, (PVOID)(buf + 0x950), &buf, sizeof(buf), &byread);
-			ReadProcessMemory(hp, (PVOID)(buf + 0x50), &buf, sizeof(buf), &byread);
-			m_edit_money = buf;
-			UpdateData(false);
-			//WriteProcessMemory(hp, (PVOID)(buf + 0x28), &num, sizeof(buf), &byread);
+	case 2:
+		ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
+		ReadProcessMemory(hp, (PVOID)(buf + 0x950), &buf, sizeof(buf), &byread);
+		ReadProcessMemory(hp, (PVOID)(buf + 0x50), &buf, sizeof(buf), &byread);
+		m_edit_money = buf;
+		UpdateData(false);
+		//WriteProcessMemory(hp, (PVOID)(buf + 0x28), &num, sizeof(buf), &byread);
+		break;
+	case 3:
+		/*HANDLE hp1 = GetGameProcessHandle();
+		DWORD buf1 = 0, byread1, bywrite1;*/
+		ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
+		ReadProcessMemory(hp, (PVOID)(buf + 0x868), &buf, sizeof(buf), &byread);
+		ReadProcessMemory(hp, (PVOID)(buf + 0x15C), &buf, sizeof(buf), &byread);
+		ReadProcessMemory(hp, (PVOID)(buf + 0x2C), &buf, sizeof(buf), &byread);
+		ReadProcessMemory(hp, (PVOID)(buf + 0x5578), &buf, sizeof(buf), &byread);
+		m_edit_sun = buf;
+		UpdateData(false);
+		//WriteProcessMemory(hp, (PVOID)(buf + 0x28), &num, sizeof(buf), &byread);
 		break;
 	}
 }
@@ -299,4 +316,24 @@ void C植物大战僵尸辅助Dlg::OnBnClickedButtonMoney()
 	UpdateData(true);
 	WriteProcessMemory(hp, (PVOID)(buf + 0x50), &m_edit_money, sizeof(buf), &byread);
 	SetTimer(2, 1000, NULL);
+}
+
+
+void C植物大战僵尸辅助Dlg::OnEnChangeEditSun()
+{
+	KillTimer(3);
+}
+
+
+void C植物大战僵尸辅助Dlg::OnBnClickedButtonSun()
+{
+	HANDLE hp = GetGameProcessHandle();
+	DWORD buf = 0, byread, bywrite;
+	ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
+	ReadProcessMemory(hp, (PVOID)(buf + 0x868), &buf, sizeof(buf), &byread);
+	ReadProcessMemory(hp, (PVOID)(buf + 0x15C), &buf, sizeof(buf), &byread);
+	ReadProcessMemory(hp, (PVOID)(buf + 0x2C), &buf, sizeof(buf), &byread);
+	UpdateData(true);
+	WriteProcessMemory(hp, (PVOID)(buf + 0x5578), &m_edit_sun, sizeof(buf), &byread);
+	SetTimer(3, 1000, NULL);
 }
