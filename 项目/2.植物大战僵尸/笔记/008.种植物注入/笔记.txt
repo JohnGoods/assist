@@ -1,0 +1,9 @@
+1.∑√Œ 
+0041E0F3 - 83 79 30 08 - cmp dword ptr [ecx+30],08
+0041C776 - 83 7E 30 01 - cmp dword ptr [esi+30],01
+0041C903 - 8B 48 30  - mov ecx,[eax+30]
+0041E36E - 89 5A 30  - mov [edx+30],ebx
+
+2.–¥»Î
+0049E7F1 - 89 78 30  - mov [eax+30],edi
+0041E36E - 89 5A 30  - mov [edx+30],ebx
