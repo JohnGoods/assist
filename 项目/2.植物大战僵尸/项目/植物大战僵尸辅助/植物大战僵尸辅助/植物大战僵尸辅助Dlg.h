@@ -34,4 +34,7 @@ public:
 	afx_msg void OnBnClickedCheckCd();
 //	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	UINT m_edit_money;
+	afx_msg void OnEnChangeEditMoney();
+	afx_msg void OnBnClickedButtonMoney();
 };

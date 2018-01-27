@@ -52,6 +52,7 @@ END_MESSAGE_MAP()
 C植物大战僵尸辅助Dlg::C植物大战僵尸辅助Dlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(C植物大战僵尸辅助Dlg::IDD, pParent)
 	, m_b_CD(FALSE)
+	, m_edit_money(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -60,6 +61,7 @@ void C植物大战僵尸辅助Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_CHECK_CD, m_b_CD);
+	DDX_Text(pDX, IDC_EDIT_MONEY, m_edit_money);
 }
 
 BEGIN_MESSAGE_MAP(C植物大战僵尸辅助Dlg, CDialogEx)
@@ -69,6 +71,8 @@ BEGIN_MESSAGE_MAP(C植物大战僵尸辅助Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK_CD, &C植物大战僵尸辅助Dlg::OnBnClickedCheckCd)
 //	ON_WM_TIMER()
 ON_WM_TIMER()
+ON_EN_CHANGE(IDC_EDIT_MONEY, &C植物大战僵尸辅助Dlg::OnEnChangeEditMoney)
+ON_BN_CLICKED(IDC_BUTTON_MONEY, &C植物大战僵尸辅助Dlg::OnBnClickedButtonMoney)
 END_MESSAGE_MAP()
 
 
@@ -105,6 +109,7 @@ BOOL C植物大战僵尸辅助Dlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	SetTimer(1, 500, NULL);
+	SetTimer(2, 1000, NULL);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -228,7 +233,7 @@ void C植物大战僵尸辅助Dlg::OnTimer(UINT_PTR nIDEvent)
 				DWORD buf = 0, byread, bywrite;
 				ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
 				ReadProcessMemory(hp, (PVOID)(buf + 0x868), &buf, sizeof(buf), &byread);
-				ReadProcessMemory(hp, (PVOID)(buf + 0x15C), &buf, sizeof(buf), &byread)      ;
+				ReadProcessMemory(hp, (PVOID)(buf + 0x15C), &buf, sizeof(buf), &byread);
 				int tmp = 0x00000000;
 				int deviation = 0;
 				deviation = 0x50 + 0x50 * i;
@@ -267,7 +272,31 @@ void C植物大战僵尸辅助Dlg::OnTimer(UINT_PTR nIDEvent)
 		}
 		break;
 		case 2:
-
+			HANDLE hp = GetGameProcessHandle();
+			DWORD buf = 0, byread, bywrite;
+			ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
+			ReadProcessMemory(hp, (PVOID)(buf + 0x950), &buf, sizeof(buf), &byread);
+			ReadProcessMemory(hp, (PVOID)(buf + 0x50), &buf, sizeof(buf), &byread);
+			m_edit_money = buf;
+			UpdateData(false);
+			//WriteProcessMemory(hp, (PVOID)(buf + 0x28), &num, sizeof(buf), &byread);
 		break;
 	}
+}
+
+void C植物大战僵尸辅助Dlg::OnEnChangeEditMoney()
+{
+	KillTimer(2);
+}
+
+
+void C植物大战僵尸辅助Dlg::OnBnClickedButtonMoney()
+{
+	HANDLE hp = GetGameProcessHandle();
+	DWORD buf = 0, byread, bywrite;
+	ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
+	ReadProcessMemory(hp, (PVOID)(buf + 0x950), &buf, sizeof(buf), &byread);
+	UpdateData(true);
+	WriteProcessMemory(hp, (PVOID)(buf + 0x50), &m_edit_money, sizeof(buf), &byread);
+	SetTimer(2, 1000, NULL);
 }
