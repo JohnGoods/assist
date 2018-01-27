@@ -32,4 +32,6 @@ protected:
 public:
 	BOOL m_b_CD;
 	afx_msg void OnBnClickedCheckCd();
+//	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

@@ -6,6 +6,8 @@
 #include "植物大战僵尸辅助.h"
 #include "植物大战僵尸辅助Dlg.h"
 #include "afxdialogex.h"
+#include <iostream>
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,6 +67,8 @@ BEGIN_MESSAGE_MAP(C植物大战僵尸辅助Dlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_CHECK_CD, &C植物大战僵尸辅助Dlg::OnBnClickedCheckCd)
+//	ON_WM_TIMER()
+ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -100,7 +104,7 @@ BOOL C植物大战僵尸辅助Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
-
+	SetTimer(1, 500, NULL);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -184,7 +188,8 @@ HANDLE GetGameProcessHandle(){
 	HWND h = ::FindWindow(NULL, L"Plants vs. Zombies");
 	if (h == 0)
 	{
-		::MessageBox(0, L"游戏未打开", 0, MB_OK);
+		::MessageBox(0, L"游戏未打开,程序退出", 0, MB_OK);
+		exit(0);
 		return NULL;
 	}
 	//1005194
@@ -197,7 +202,8 @@ HANDLE GetGameProcessHandle(){
 	//
 	if (hp == NULL)
 	{
-		::MessageBox(0, L"打开进程出错", 0, MB_OK);
+		::MessageBox(0, L"打开进程出错,程序退出", 0, MB_OK);
+		exit(0);
 		return NULL;
 	}
 	return hp;
@@ -206,26 +212,62 @@ HANDLE GetGameProcessHandle(){
 void C植物大战僵尸辅助Dlg::OnBnClickedCheckCd()
 {
 	UpdateData(true);//更新窗口状态至变量
-	UCHAR buf[2];
-	
-	HANDLE hp = GetGameProcessHandle();
-	//读取数据 
-	DWORD  bywrite;
-	if (m_b_CD)
-	{   //禁用掉冷却时间
-		//0x0049DDE6 - 75 4
-		//	90 90
-		buf[0] = 0x90;
-		buf[1] = 0x90;
+}
+
+void C植物大战僵尸辅助Dlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	CDialogEx::OnTimer(nIDEvent);
+	switch (nIDEvent)
+	{
+	case 1:     
+		if (m_b_CD)	//勾选去了CD
+		{   //禁用掉冷却时间
+			for (int i = 0; i < 10; i++){
+				HANDLE hp = GetGameProcessHandle();
+				DWORD buf = 0, byread, bywrite;
+				ReadProcessMemory(hp, (PVOID)0x755E0C, &buf, sizeof(buf), &byread);
+				ReadProcessMemory(hp, (PVOID)(buf + 0x868), &buf, sizeof(buf), &byread);
+				ReadProcessMemory(hp, (PVOID)(buf + 0x15C), &buf, sizeof(buf), &byread)      ;
+				int tmp = 0x00000000;
+				int deviation = 0;
+				deviation = 0x50 + 0x50 * i;
+				/*if (i == 0){
+					deviation = 0x50;
+				}
+				else if (i == 1){
+					deviation = 0xA0;
+				}
+				else if (i == 2){
+					deviation = 0xF0;
+				}
+				else if (i == 3){
+					deviation = 0x140;
+				}
+				else if (i == 4){
+					deviation = 0x190;
+				}
+				else if (i == 5){
+					deviation = 0x1E0;
+				}
+				else if (i == 6){
+					deviation = 0x230;
+				}
+				else if (i == 7){
+					deviation = 0x280;
+				}
+				else if (i == 8){
+					deviation = 0x2D0;
+				}
+				else if (i == 9){
+					deviation = 0x320;
+				}*/
+				WriteProcessMemory(hp, (PVOID)(buf + deviation), &tmp, sizeof(buf), &byread);
+			}
+		}
+		break;
+		case 2:
+
+		break;
 	}
-	else
-	{   //启用冷却时间
-		//0x0049DDE6 - 75 4  
-		buf[0] = 0x75;
-		buf[1] = 0x4;
-		//0x4
-	}
-	//把buf内数据写入 0x0487296
-	WriteProcessMemory(hp, (LPVOID)0x0049DDE6, buf, sizeof(buf), &bywrite);
-	//WriteProcessMemory(hp, (LPVOID)0x0049DDE6, buf, sizeof(buf), &bywrite);
 }
