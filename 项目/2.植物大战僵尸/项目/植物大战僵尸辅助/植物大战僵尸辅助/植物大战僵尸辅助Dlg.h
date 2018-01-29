@@ -40,4 +40,7 @@ public:
 	UINT m_edit_sun;
 	afx_msg void OnEnChangeEditSun();
 	afx_msg void OnBnClickedButtonSun();
+	afx_msg void OnBnClickedButtonPlan();
+	afx_msg void OnBnClickedButtonOpenplan();
+	afx_msg void OnBnClickedButtonClosePlan();
 };

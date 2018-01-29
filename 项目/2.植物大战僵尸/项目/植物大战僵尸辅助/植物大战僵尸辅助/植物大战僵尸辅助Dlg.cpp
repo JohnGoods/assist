@@ -77,6 +77,9 @@ ON_EN_CHANGE(IDC_EDIT_MONEY, &C植物大战僵尸辅助Dlg::OnEnChangeEditMoney)
 ON_BN_CLICKED(IDC_BUTTON_MONEY, &C植物大战僵尸辅助Dlg::OnBnClickedButtonMoney)
 ON_EN_CHANGE(IDC_EDIT_SUN, &C植物大战僵尸辅助Dlg::OnEnChangeEditSun)
 ON_BN_CLICKED(IDC_BUTTON_SUN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonSun)
+ON_BN_CLICKED(IDC_BUTTON_PLAN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonPlan)
+ON_BN_CLICKED(IDC_BUTTON_OPENPLAN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonOpenplan)
+ON_BN_CLICKED(IDC_BUTTON_ClOSE_PLAN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonClosePlan)
 END_MESSAGE_MAP()
 
 
@@ -113,8 +116,8 @@ BOOL C植物大战僵尸辅助Dlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	SetTimer(1, 500, NULL);
-	SetTimer(2, 1000, NULL);
-	SetTimer(3, 1000, NULL);
+	SetTimer(2, 3000, NULL);
+	SetTimer(3, 3000, NULL);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -298,6 +301,9 @@ void C植物大战僵尸辅助Dlg::OnTimer(UINT_PTR nIDEvent)
 		UpdateData(false);
 		//WriteProcessMemory(hp, (PVOID)(buf + 0x28), &num, sizeof(buf), &byread);
 		break;
+	case 4:
+		this->OnBnClickedButtonPlan();
+		break;
 	}
 }
 
@@ -336,4 +342,113 @@ void C植物大战僵尸辅助Dlg::OnBnClickedButtonSun()
 	UpdateData(true);
 	WriteProcessMemory(hp, (PVOID)(buf + 0x5578), &m_edit_sun, sizeof(buf), &byread);
 	SetTimer(3, 1000, NULL);
+}
+
+__declspec(naked) void plant1(DWORD *pxy)
+{
+	__asm
+	{ //esp+4
+		//mov edx, -1
+		//	push edx	//push edx
+		//	mov eax ,2
+		//	push eax	//push eax
+		//	mov eax,4	//y
+		//	mov ecx, 8	//ecx
+		//	push ecx	//x
+		//	//push 26E9EC00
+		//	mov edi, dword ptr ds : [0755E0C] //mov eax,0x6a9ec0
+		//	mov edi, dword ptr ds : [edi + 0x868]
+		//	push edi
+		//	mov ebx, 0x00418D70
+		//	call ebx
+		//	ret
+				
+		mov ebx, [esp + 4] //xy
+		mov ecx, [ebx]  //x
+		mov edx, [ebx + 4] //y	
+			push -1
+			push 2
+			mov eax, edx
+			push ecx
+			mov edi, dword ptr ds : [0x755E0C] //mov eax,0x6a9ec0
+			mov edi, dword ptr ds : [edi + 0x868]
+			//mov edi, dword ptr ds : [0x255E0620]
+			push edi
+			mov ebx, 0x418D70
+			call ebx
+			ret
+
+			//mov ebx, [esp + 4] //xy
+			//mov ecx, [ebx]  //x
+			//mov edx, [ebx + 4] //y
+			//push - 1
+			//push 2
+			//push ecx //X列
+			//mov eax, dword ptr ds : [0x6a9ec0] //mov eax,0x6a9ec0
+			//mov eax, dword ptr ds : [eax + 0x768]
+			//push eax
+			//mov eax, edx//Y行
+			//mov edx, 0x0040D120
+			//call edx
+			//ret
+	}
+}
+
+void plantOne(DWORD x, DWORD y)
+{
+	DWORD xy[2];
+	xy[0] = x;//0..7
+	xy[1] = y;// 0..4
+	DWORD byWrite;
+	//游戏进程句柄
+	HANDLE hp = GetGameProcessHandle();
+	//在目标进程分配内存空间 以方便写入要执行的代码
+	PVOID FarCall = VirtualAllocEx(hp, NULL, 0xFFFF, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	PVOID CallArg = VirtualAllocEx(hp, NULL, sizeof(int)* 2, MEM_COMMIT, PAGE_READWRITE);
+	//向目标进程的 目标地址写入我们要执行的代码 
+	WriteProcessMemory(hp, FarCall, plant1, 0xFFFF, &byWrite);
+	//向目标进程 写入参数
+	WriteProcessMemory(hp, CallArg, xy, sizeof(DWORD)* 2, &byWrite);
+	//在目标进程 指定地址 执行代码
+	TRACE("\n addr=%x \n", FarCall);
+	HANDLE th = CreateRemoteThread(hp, NULL, NULL, (LPTHREAD_START_ROUTINE)FarCall, CallArg, NULL, NULL);
+	WaitForSingleObject(th, 0xFFFFFFF);//等待 ...
+	VirtualFreeEx(hp, FarCall, 0xFFFF, MEM_DECOMMIT);
+	CloseHandle(th);
+	CloseHandle(hp);
+}
+
+void C植物大战僵尸辅助Dlg::OnBnClickedButtonPlan()
+{
+	for (int x = 0; x <= 8; x++)
+	{
+		for (int y = 0; y <= 4; y++)
+		{
+			plantOne(x, y);
+		}
+	}
+	// TODO: 在此添加控件通知处理程序代码
+	//DWORD byWrite;
+	////游戏进程句柄
+	//HANDLE hp = GetGameProcessHandle();
+	////在目标进程分配内存空间 以方便写入要执行的代码
+	//PVOID FarCall = VirtualAllocEx(hp, NULL, 0xFFFF, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	////向目标进程的 目标地址写入我们要执行的代码 
+	//WriteProcessMemory(hp, FarCall, plant1, 0xFFFF, &byWrite);
+	////在目标进程 指定地址 执行代码
+	//TRACE("\n addr=%x \n", FarCall);
+	//CreateRemoteThread(hp, NULL, NULL, (LPTHREAD_START_ROUTINE)FarCall, NULL, NULL, NULL);
+
+}
+
+
+void C植物大战僵尸辅助Dlg::OnBnClickedButtonOpenplan()
+{
+	SetTimer(4, 2000, NULL);
+}
+
+
+void C植物大战僵尸辅助Dlg::OnBnClickedButtonClosePlan()
+{
+	KillTimer(4);
 }
