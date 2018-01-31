@@ -43,4 +43,5 @@ public:
 	afx_msg void OnBnClickedButtonPlan();
 	afx_msg void OnBnClickedButtonOpenplan();
 	afx_msg void OnBnClickedButtonClosePlan();
+	afx_msg void OnBnClickedCheckWudi();
 };

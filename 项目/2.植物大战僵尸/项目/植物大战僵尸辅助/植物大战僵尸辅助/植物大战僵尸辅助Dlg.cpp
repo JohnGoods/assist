@@ -80,6 +80,7 @@ ON_BN_CLICKED(IDC_BUTTON_SUN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonSun)
 ON_BN_CLICKED(IDC_BUTTON_PLAN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonPlan)
 ON_BN_CLICKED(IDC_BUTTON_OPENPLAN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonOpenplan)
 ON_BN_CLICKED(IDC_BUTTON_ClOSE_PLAN, &C植物大战僵尸辅助Dlg::OnBnClickedButtonClosePlan)
+ON_BN_CLICKED(IDC_CHECK_WUDI, &C植物大战僵尸辅助Dlg::OnBnClickedCheckWudi)
 END_MESSAGE_MAP()
 
 
@@ -506,11 +507,35 @@ void C植物大战僵尸辅助Dlg::OnBnClickedButtonPlan()
 
 void C植物大战僵尸辅助Dlg::OnBnClickedButtonOpenplan()
 {
-	SetTimer(4, 2000, NULL);
+	SetTimer(4, 10000, NULL);
 }
 
 
 void C植物大战僵尸辅助Dlg::OnBnClickedButtonClosePlan()
 {
 	KillTimer(4);
+}
+
+
+void C植物大战僵尸辅助Dlg::OnBnClickedCheckWudi()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UCHAR a4[4] = { 0x90, 0x90, 0x90, 0x90 };
+	DWORD bw;
+	CButton* pbtn = (CButton*)GetDlgItem(IDC_CHECK_WUDI);
+	HANDLE hp = GetGameProcessHandle();
+	if (pbtn->GetCheck())
+	{
+		//无敌代码
+		WriteProcessMemory(hp, (PVOID)0x0054BA6A, a4, sizeof(a4), &bw);
+
+	}
+	else
+	{
+		//还原正常代码
+		//83 46 40 fc
+		UCHAR b4[4] = { 0x83, 0x46, 0x40, 0xfc };
+		WriteProcessMemory(hp, (PVOID)0x0054BA6A, b4, sizeof(a4), &bw);
+	}
+	CloseHandle(hp);
 }
