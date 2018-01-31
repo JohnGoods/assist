@@ -6,3 +6,5 @@ PlantsVsZombies.exe+14D0CA - E8 A1C3FFFF           - call PlantsVsZombies.exe+14
 PlantsVsZombies.exe+14D0CF - 8B D8                 - mov ebx,eax
 PlantsVsZombies.exe+14D0D1 - 8B 47 24              - mov eax,[edi+24]
 PlantsVsZombies.exe+14D0D4 - 83 F8 0C              - cmp eax,0C { 12 }
+
+PlantsVsZombies.exe+14CDDA - 89 8D D0000000        - mov [ebp+000000D0],ecx
