@@ -6,7 +6,7 @@
 #include "植物大战僵尸辅助.h"
 #include "植物大战僵尸辅助Dlg.h"
 #include "afxdialogex.h"
-#include <iostream>
+//#include <iostream>
 using namespace std;
 
 #ifdef _DEBUG
@@ -118,6 +118,61 @@ BOOL C植物大战僵尸辅助Dlg::OnInitDialog()
 	SetTimer(1, 500, NULL);
 	SetTimer(2, 3000, NULL);
 	SetTimer(3, 3000, NULL);
+	CComboBox* pbox = (CComboBox*)GetDlgItem(IDC_COMBO_PLAN_ID);
+	pbox->AddString(_T("000 = 豌豆射手"));
+	pbox->AddString(_T("001 = 向日葵"));
+	pbox->AddString(_T("002 = 樱桃炸弹"));
+	pbox->AddString(_T("003 = 坚果"));
+	pbox->AddString(_T("004 = 土拔鼠"));
+	pbox->AddString(_T("005 = 寒冰豌豆射手"));
+	pbox->AddString(_T("006 = 食人花"));
+	pbox->AddString(_T("007 = 双重豌豆射手"));
+	pbox->AddString(_T("008 = 小毒菇"));
+	pbox->AddString(_T("009 = 小阳光菇"));
+	pbox->AddString(_T("010 = 大毒菇"));
+	pbox->AddString(_T("011 = 墓碑吞噬者"));
+	pbox->AddString(_T("012 = 晕眩菇"));
+	pbox->AddString(_T("013 = 长毒菇"));
+	pbox->AddString(_T("014 = 寒冰菇"));
+	pbox->AddString(_T("015 = 毁灭菇"));
+	pbox->AddString(_T("016 = 莲蓬"));
+	pbox->AddString(_T("017 = 瓜瓜"));
+	pbox->AddString(_T("018 = 三碗射手"));
+	pbox->AddString(_T("019 = 海藻"));
+	pbox->AddString(_T("020 = 辣椒"));
+	pbox->AddString(_T("021 = 地刺"));
+	pbox->AddString(_T("022 = 火桩"));
+	pbox->AddString(_T("023 = 高坚果"));
+	pbox->AddString(_T("024 = 小海菇"));
+	pbox->AddString(_T("025 = 夜灯"));
+	pbox->AddString(_T("026 = 仙人掌"));
+	pbox->AddString(_T("027 = 三叶草"));
+	pbox->AddString(_T("028 = 左右豌豆射手"));
+	pbox->AddString(_T("029 = 星星"));
+	pbox->AddString(_T("030 = 南瓜"));
+	pbox->AddString(_T("031 = 磁铁"));
+	pbox->AddString(_T("032 = 菜投手"));
+	pbox->AddString(_T("033 = 花盆"));
+	pbox->AddString(_T("034 = 玉米投手"));
+	pbox->AddString(_T("035 = 咖啡豆"));
+	pbox->AddString(_T("036 = 大蒜"));
+	pbox->AddString(_T("037 = 保护草"));
+	pbox->AddString(_T("038 = 金银花"));
+	pbox->AddString(_T("039 = 西瓜投手"));
+	pbox->AddString(_T("040 = 多重豌豆射手"));
+	pbox->AddString(_T("041 = 三向日葵"));
+	pbox->AddString(_T("042 = 章鱼"));
+	pbox->AddString(_T("043 = 陆陆猫"));
+	pbox->AddString(_T("044 = 冰冻西瓜"));
+	pbox->AddString(_T("045 = 吸金"));
+	pbox->AddString(_T("046 = 地刺王"));
+	pbox->AddString(_T("047 = 加农炮"));
+	pbox->AddString(_T("048 = 克隆豆"));
+	pbox->AddString(_T("049 = 红色坚果"));
+	pbox->AddString(_T("050 = 巨大坚果"));
+	pbox->AddString(_T("051 = 小草"));
+	pbox->AddString(_T("052 = 反转射手?"));
+	pbox->SetCurSel(2);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -366,18 +421,23 @@ __declspec(naked) void plant1(DWORD *pxy)
 		mov ebx, [esp + 4] //xy
 		mov ecx, [ebx]  //x
 		mov edx, [ebx + 4] //y	
+		mov eax, [ebx + 8]
 			push -1
-			push 2
+			push eax	//植物ID
 			mov eax, edx
 			push ecx
 			mov edi, dword ptr ds : [0x755E0C] //mov eax,0x6a9ec0
 			mov edi, dword ptr ds : [edi + 0x868]
+			test edi, edi
+			jz endl
 			//mov edi, dword ptr ds : [0x255E0620]
 			push edi
 			mov ebx, 0x418D70
 			call ebx
 			ret
-
+		endl :
+			add esp, 0xc //3*sizeof(int)
+			ret
 			//mov ebx, [esp + 4] //xy
 			//mov ecx, [ebx]  //x
 			//mov edx, [ebx + 4] //y
@@ -394,11 +454,12 @@ __declspec(naked) void plant1(DWORD *pxy)
 	}
 }
 
-void plantOne(DWORD x, DWORD y)
+void plantOne(DWORD x, DWORD y, DWORD index)
 {
-	DWORD xy[2];
+	DWORD xy[3];
 	xy[0] = x;//0..7
 	xy[1] = y;// 0..4
+	xy[2] = index;//植物ID
 	DWORD byWrite;
 	//游戏进程句柄
 	HANDLE hp = GetGameProcessHandle();
@@ -408,7 +469,7 @@ void plantOne(DWORD x, DWORD y)
 	//向目标进程的 目标地址写入我们要执行的代码 
 	WriteProcessMemory(hp, FarCall, plant1, 0xFFFF, &byWrite);
 	//向目标进程 写入参数
-	WriteProcessMemory(hp, CallArg, xy, sizeof(DWORD)* 2, &byWrite);
+	WriteProcessMemory(hp, CallArg, xy, sizeof(DWORD)* 3, &byWrite);
 	//在目标进程 指定地址 执行代码
 	TRACE("\n addr=%x \n", FarCall);
 	HANDLE th = CreateRemoteThread(hp, NULL, NULL, (LPTHREAD_START_ROUTINE)FarCall, CallArg, NULL, NULL);
@@ -420,11 +481,12 @@ void plantOne(DWORD x, DWORD y)
 
 void C植物大战僵尸辅助Dlg::OnBnClickedButtonPlan()
 {
+	DWORD index = ((CComboBox*)GetDlgItem(IDC_COMBO_PLAN_ID))->GetCurSel();
 	for (int x = 0; x <= 8; x++)
 	{
 		for (int y = 0; y <= 4; y++)
 		{
-			plantOne(x, y);
+			plantOne(x, y,index);
 		}
 	}
 	// TODO: 在此添加控件通知处理程序代码
