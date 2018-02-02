@@ -6,6 +6,7 @@
 #include "连连看辅助.h"
 #include "连连看辅助Dlg.h"
 #include "afxdialogex.h"
+#include "GameProc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -156,16 +157,17 @@ HCURSOR C连连看辅助Dlg::OnQueryDragIcon()
 }
 
 
-HWND gameh;
-RECT r1;
+//HWND gameh;
+//RECT r1;
 void C连连看辅助Dlg::OnBnClickedButtonStart()
 {
-	// TODO: Add your control notification handler code here
-	//获取游戏窗口句柄
-	gameh = ::FindWindow(NULL, L"QQ游戏 - 连连看角色版");
-	::GetWindowRect(gameh, &r1);
-	this->m_edit_x = r1.left; this->m_edit_y = r1.top;
-	UpdateData(false);
-	//设置鼠标指针位置  取开局所在坐标:x=655;y=577 //lparam 0x0241028f
-	SetCursorPos(655 + r1.left, 577 + r1.top);
+	//// TODO: Add your control notification handler code here
+	////获取游戏窗口句柄
+	//gameh = ::FindWindow(NULL, L"QQ游戏 - 连连看角色版");
+	//::GetWindowRect(gameh, &r1);
+	//this->m_edit_x = r1.left; this->m_edit_y = r1.top;
+	//UpdateData(false);
+	////设置鼠标指针位置  取开局所在坐标:x=655;y=577 //lparam 0x0241028f
+	//SetCursorPos(655 + r1.left, 577 + r1.top);
+	startGame();
 }
