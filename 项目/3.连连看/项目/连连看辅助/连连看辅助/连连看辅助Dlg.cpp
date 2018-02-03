@@ -52,6 +52,7 @@ C连连看辅助Dlg::C连连看辅助Dlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(C连连看辅助Dlg::IDD, pParent)
 	, m_edit_x(0)
 	, m_edit_y(0)
+	, m_edit_seat(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -61,6 +62,7 @@ void C连连看辅助Dlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_x, m_edit_x);
 	DDX_Text(pDX, IDC_EDIT_y, m_edit_y);
+	DDX_Text(pDX, IDC_EDIT_SEAT, m_edit_seat);
 }
 
 BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
@@ -68,6 +70,7 @@ BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_START, &C连连看辅助Dlg::OnBnClickedButtonStart)
+	ON_BN_CLICKED(IDC_BUTTON_SEAT, &C连连看辅助Dlg::OnBnClickedButtonSeat)
 END_MESSAGE_MAP()
 
 
@@ -170,4 +173,27 @@ void C连连看辅助Dlg::OnBnClickedButtonStart()
 	////设置鼠标指针位置  取开局所在坐标:x=655;y=577 //lparam 0x0241028f
 	//SetCursorPos(655 + r1.left, 577 + r1.top);
 	startGame();
+}
+
+//const PCHAR gameCaption = L("QQ游戏 - 连连看角色版");
+void C连连看辅助Dlg::OnBnClickedButtonSeat()
+{
+	// 游戏窗口标题："QQ游戏 - 连连看角色版"
+	// 1、FindWindow               //获取窗口句柄
+	//2、GetWindowThreadProcessId //获取窗口进程ID
+	//3、OpenProcess              //打开指定进程
+	//4、ReadProcessMemory        //读指定进程 内存数据
+	//获取窗口句柄
+	HWND gameh = ::FindWindow(NULL, L"QQ游戏 - 连连看角色版");
+	//获取窗口进程ID
+	DWORD processid;
+	::GetWindowThreadProcessId(gameh, &processid);
+	//打开指定进程
+	HANDLE processH = ::OpenProcess(PROCESS_ALL_ACCESS, false, processid);
+	//读指定进程 内存数据
+	DWORD byread;
+	LPCVOID pbase = (LPCVOID)0x00171618;
+	LPVOID  nbuffer = (LPVOID)&m_edit_seat;
+	::ReadProcessMemory(processH, pbase, nbuffer, 4, &byread);
+	UpdateData(false); //更新变量的值到 编辑框
 }
