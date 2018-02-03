@@ -33,4 +33,6 @@ public:
 	int m_edit_x;
 	int m_edit_y;
 	afx_msg void OnBnClickedButtonStart();
+	int m_edit_seat;
+	afx_msg void OnBnClickedButtonSeat();
 };
