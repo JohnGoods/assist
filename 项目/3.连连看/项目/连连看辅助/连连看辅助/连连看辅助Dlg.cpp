@@ -175,7 +175,7 @@ void C连连看辅助Dlg::OnBnClickedButtonStart()
 	startGame();
 }
 
-//const PCHAR gameCaption = L("QQ游戏 - 连连看角色版");
+//const PCHAR gameCaption = "QQ游戏 - 连连看角色版";
 void C连连看辅助Dlg::OnBnClickedButtonSeat()
 {
 	// 游戏窗口标题："QQ游戏 - 连连看角色版"
@@ -184,7 +184,7 @@ void C连连看辅助Dlg::OnBnClickedButtonSeat()
 	//3、OpenProcess              //打开指定进程
 	//4、ReadProcessMemory        //读指定进程 内存数据
 	//获取窗口句柄
-	HWND gameh = ::FindWindow(NULL, L"QQ游戏 - 连连看角色版");
+	HWND gameh = ::FindWindow(NULL, _T("QQ游戏 - 连连看角色版"));
 	//获取窗口进程ID
 	DWORD processid;
 	::GetWindowThreadProcessId(gameh, &processid);
