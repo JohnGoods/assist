@@ -3,10 +3,17 @@
   <CheatEntries>
     <CheatEntry>
       <ID>0</ID>
-      <Description>"无描述"</Description>
+      <Description>"座位"</Description>
       <LastState Value="3" RealAddress="00171618"/>
       <VariableType>4 Bytes</VariableType>
       <Address>00171618</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"棋盘数据"</Description>
+      <LastState Value="8" RealAddress="00189F78"/>
+      <VariableType>Byte</VariableType>
+      <Address>00189F78</Address>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>
