@@ -37,4 +37,5 @@ public:
 	afx_msg void OnBnClickedButtonSeat();
 	CString m_edit_chess_data;
 	afx_msg void OnBnClickedButtonChatData();
+	afx_msg void OnBnClickedButtonClick();
 };

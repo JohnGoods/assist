@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_START, &C连连看辅助Dlg::OnBnClickedButtonStart)
 	ON_BN_CLICKED(IDC_BUTTON_SEAT, &C连连看辅助Dlg::OnBnClickedButtonSeat)
 	ON_BN_CLICKED(IDC_BUTTON_CHAT_DATA, &C连连看辅助Dlg::OnBnClickedButtonChatData)
+	ON_BN_CLICKED(IDC_BUTTON_CLICK, &C连连看辅助Dlg::OnBnClickedButtonClick)
 END_MESSAGE_MAP()
 
 
@@ -232,4 +233,15 @@ void C连连看辅助Dlg::OnBnClickedButtonChatData()
 		m_edit_chess_data += "\r\n";
 	}
 	UpdateData(false);
+}
+
+void C连连看辅助Dlg::OnBnClickedButtonClick()
+{
+
+	int   x = 22, y = 187;
+	HWND hwnd = ::FindWindow(NULL, _T("QQ游戏 - 连连看角色版"));
+	int lparam;
+	lparam = (y << 16) + x + 31 * 0;//表示指定格
+	::SendMessage(hwnd, WM_LBUTTONDOWN, 0, lparam);//
+	::SendMessage(hwnd, WM_LBUTTONUP, 0, lparam);  //
 }
