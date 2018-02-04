@@ -120,6 +120,7 @@
     <ResourceCompile Include="连连看辅助.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resource.hm" />
     <None Include="res\My.rc2" />
   </ItemGroup>
   <ItemGroup>

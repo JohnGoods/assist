@@ -57,6 +57,9 @@
     <None Include="res\My.rc2">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="resource.hm">
+      <Filter>头文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\连连看辅助.ico">

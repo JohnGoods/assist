@@ -53,6 +53,7 @@ C连连看辅助Dlg::C连连看辅助Dlg(CWnd* pParent /*=NULL*/)
 	, m_edit_x(0)
 	, m_edit_y(0)
 	, m_edit_seat(0)
+	, m_edit_chess_data(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -63,6 +64,7 @@ void C连连看辅助Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_x, m_edit_x);
 	DDX_Text(pDX, IDC_EDIT_y, m_edit_y);
 	DDX_Text(pDX, IDC_EDIT_SEAT, m_edit_seat);
+	DDX_Text(pDX, IDC_EDIT_CHESS_DATA, m_edit_chess_data);
 }
 
 BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
@@ -71,6 +73,7 @@ BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_START, &C连连看辅助Dlg::OnBnClickedButtonStart)
 	ON_BN_CLICKED(IDC_BUTTON_SEAT, &C连连看辅助Dlg::OnBnClickedButtonSeat)
+	ON_BN_CLICKED(IDC_BUTTON_CHAT_DATA, &C连连看辅助Dlg::OnBnClickedButtonChatData)
 END_MESSAGE_MAP()
 
 
@@ -196,4 +199,37 @@ void C连连看辅助Dlg::OnBnClickedButtonSeat()
 	LPVOID  nbuffer = (LPVOID)&m_edit_seat;
 	::ReadProcessMemory(processH, pbase, nbuffer, 4, &byread);
 	UpdateData(false); //更新变量的值到 编辑框
+}
+
+byte chessdata[11][19];//a[y][x]
+void C连连看辅助Dlg::OnBnClickedButtonChatData()
+{
+	// TODO: Add your control notification handler code here
+	//获取窗口句柄
+	HWND gameh = ::FindWindow(NULL, _T("QQ游戏 - 连连看角色版"));
+	//获取窗口进程ID
+	DWORD processid;
+	::GetWindowThreadProcessId(gameh, &processid);
+	//打开指定进程
+	HANDLE processH = ::OpenProcess(PROCESS_ALL_ACCESS, false, processid);
+	//读指定进程 内存数据
+	DWORD byread;
+	LPCVOID pbase = (LPCVOID)0x00189F78; //棋盘数据基址
+	LPVOID  nbuffer = (LPVOID)&chessdata;    //存放棋盘数据
+	::ReadProcessMemory(processH, pbase, nbuffer, 11 * 19, &byread);
+	///显示棋盘数据
+	char buf[11];
+	m_edit_chess_data = ""; //清空编辑
+	for (int y = 0; y <= 10; y++)
+	{
+		for (int x = 0; x <= 18; x++) //读一行
+		{
+			_itoa_s(chessdata[y][x], buf, 16); //转换成字串
+			m_edit_chess_data += buf;
+			m_edit_chess_data += " ";
+		}
+		//换行
+		m_edit_chess_data += "\r\n";
+	}
+	UpdateData(false);
 }
