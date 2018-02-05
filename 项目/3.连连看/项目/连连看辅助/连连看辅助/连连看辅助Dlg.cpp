@@ -202,7 +202,7 @@ void C连连看辅助Dlg::OnBnClickedButtonSeat()
 	UpdateData(false); //更新变量的值到 编辑框
 }
 
-byte chessdata[11][19];//a[y][x]
+//byte chessdata[11][19];//a[y][x]
 void C连连看辅助Dlg::OnBnClickedButtonChatData()
 {
 	// TODO: Add your control notification handler code here
