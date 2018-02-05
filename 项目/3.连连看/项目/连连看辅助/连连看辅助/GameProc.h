@@ -1,4 +1,5 @@
 #include "stdafx.h" 
+#include "ChessPoint.h"
 //游戏 功能函数
 HWND gameh;
 RECT r1;
@@ -43,9 +44,34 @@ void updatdChess()
 	::ReadProcessMemory(processH, pbase, nbuffer, 11 * 19, &byread);
 }
 
+bool lineNull(POINT p1, POINT p2)
+{
+	return true;
+}
+
 //检测 p1,p2 2个棋子 是否可以消除
 bool check2p(POINT p1, POINT p2)
 { 
+	// Y坐标相同的情况下 p1,p2 
+	//lineNull(p1.right,p2.left) //可消除
+	if (p1.y == p2.y)
+	{
+		ChessPoint pa(p1), pb(p2);
+
+		if (lineNull(pa.down, pb.up)) return true;
+	}
+	//X坐标相同的情况下 p1,p2
+	//LineNull(p1.down,p2.up)    //可消除
+	if (p1.x == p2.x)
+	{
+		ChessPoint pa(p1), pb(p2);
+
+		if (lineNull(pa.down, pb.up)) return true;
+	}
+
+	//X与Y坐标都不相情况下 p1,p2
+	//lineNull(p1.down,pa),LineNull(p2.down,pb),LineNull(pa,pb)
+	//可消除
 	return true;
 }
 
