@@ -58,6 +58,8 @@ C连连看辅助Dlg::C连连看辅助Dlg(CWnd* pParent /*=NULL*/)
 	, m_p1y(0)
 	, m_p2x(0)
 	, m_p2y(0)
+	, m_autoplay(FALSE)
+	, m_autostart(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -73,6 +75,8 @@ void C连连看辅助Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT2, m_p1y);
 	DDX_Text(pDX, IDC_EDIT3, m_p2x);
 	DDX_Text(pDX, IDC_EDIT4, m_p2y);
+	DDX_Check(pDX, IDC_CHECK_CHECK_PLAY_GAME, m_autoplay);
+	DDX_Check(pDX, IDC_CHECK_CHECK_START, m_autostart);
 }
 
 BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
@@ -84,6 +88,8 @@ BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_CHAT_DATA, &C连连看辅助Dlg::OnBnClickedButtonChatData)
 	ON_BN_CLICKED(IDC_BUTTON_CLICK, &C连连看辅助Dlg::OnBnClickedButtonClick)
 	ON_BN_CLICKED(IDC_BUTTON_SINGLE, &C连连看辅助Dlg::OnBnClickedButtonSingle)
+	ON_BN_CLICKED(IDC_CHECK_CHECK_START, &C连连看辅助Dlg::OnBnClickedCheckCheckStart)
+	ON_BN_CLICKED(IDC_CHECK_CHECK_PLAY_GAME, &C连连看辅助Dlg::OnBnClickedCheckCheckPlayGame)
 END_MESSAGE_MAP()
 
 
@@ -255,13 +261,43 @@ void C连连看辅助Dlg::OnBnClickedButtonClick()
 	::SendMessage(hwnd, WM_LBUTTONUP, 0, lparam);  //
 }
 
-void C连连看辅助Dlg::OnBnClickedButtonSingle()
-{
-	// TODO:  在此添加控件通知处理程序代码
-	ClearPiar();
-}
+//bool C连连看辅助Dlg::ClearPiar() //消除一对棋子
+//{
+//	//读出棋盘数据至chessdata 11,19
+//	updatdChess();
+//	//遍历整个棋盘 找出相同类型 一对棋子
+//	POINT p1, p2;
+//	int x1, y1, x2, y2;
+//	for (y1 = 0; y1<11; y1++)
+//	for (x1 = 0; x1<19; x1++)
+//	{
+//		for (y2 = y1; y2<11; y2++)
+//		for (x2 = 0; x2<19; x2++)
+//		if ((chessdata[y1][x1] == chessdata[y2][x2]) // 棋子1与棋子2 类型是否相同
+//			&& (!((x1 == x2) && (y1 == y2)))  //要求点1与点2 相等则假
+//			)
+//		{
+//			p1.x = x1; p1.y = y1;
+//			p2.x = x2; p2.y = y2;
+//			//检测 相同的2个棋子是否可消掉
+//			if (Check2p(p1, p2))//如果可消除 则返回真
+//			{
+//				//click2p 鼠标模拟 点击 p1，p2
+//				Click2p(p1, p2);
+//				m_p1x = x1;
+//				m_p1y = y1;
+//				m_p2x = x2;
+//				m_p2y = y2;
+//				UpdateData(false);//更新数据至窗口
+//				return true;
+//
+//			}
+//		}
+//	}
+//	return false;
+//}
 
-bool C连连看辅助Dlg::ClearPiar() //消除一对棋子
+bool ClearPiar() //消除一对棋子
 {
 	//读出棋盘数据至chessdata 11,19
 	updatdChess();
@@ -284,11 +320,6 @@ bool C连连看辅助Dlg::ClearPiar() //消除一对棋子
 			{
 				//click2p 鼠标模拟 点击 p1，p2
 				Click2p(p1, p2);
-				m_p1x = x1;
-				m_p1y = y1;
-				m_p2x = x2;
-				m_p2y = y2;
-				UpdateData(false);//更新数据至窗口
 				return true;
 
 			}
@@ -297,3 +328,60 @@ bool C连连看辅助Dlg::ClearPiar() //消除一对棋子
 	return false;
 }
 
+void C连连看辅助Dlg::OnBnClickedButtonSingle()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	ClearPiar();
+}
+
+
+///////
+VOID CALLBACK playproc(
+	HWND hwnd,     // handle of window for timer messages
+	UINT uMsg,     // WM_TIMER message
+	UINT idEvent,  // timer identifier
+	DWORD dwTime   // current system time
+	)
+{
+	ClearPiar();
+}
+VOID CALLBACK strartproc(
+	HWND hwnd,     // handle of window for timer messages
+	UINT uMsg,     // WM_TIMER message
+	UINT idEvent,  // timer identifier
+	DWORD dwTime   // current system time
+	)
+{
+	startGame(); //自动开局
+}
+
+const int PLAYID = 111;
+const int STARTID = 112;
+
+//自动开局
+void C连连看辅助Dlg::OnBnClickedCheckCheckStart()
+{
+	UpdateData(true);//更新窗口内容至变量
+	if (m_autostart)
+	{
+		SetTimer(STARTID, 3 * 1000, &strartproc);
+	}
+	else
+	{
+		KillTimer(STARTID);
+	}
+}
+
+//自动游戏
+void C连连看辅助Dlg::OnBnClickedCheckCheckPlayGame()
+{
+	UpdateData(true);//更新窗口内容至变量
+	if (m_autoplay)
+	{
+		SetTimer(PLAYID, 1500, &playproc);
+	}
+	else
+	{
+		KillTimer(PLAYID);
+	}
+}

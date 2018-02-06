@@ -38,10 +38,14 @@ public:
 	CString m_edit_chess_data;
 	afx_msg void OnBnClickedButtonChatData();
 	afx_msg void OnBnClickedButtonClick();
-	bool ClearPiar();
+	//bool ClearPiar();
 	afx_msg void OnBnClickedButtonSingle();
 	int m_p1x;
 	int m_p1y;
 	int m_p2x;
 	int m_p2y;
+	afx_msg void OnBnClickedCheckCheckStart();
+	afx_msg void OnBnClickedCheckCheckPlayGame();
+	BOOL m_autoplay;
+	BOOL m_autostart;
 };
