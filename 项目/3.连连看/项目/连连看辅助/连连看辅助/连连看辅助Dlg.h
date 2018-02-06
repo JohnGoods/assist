@@ -38,4 +38,10 @@ public:
 	CString m_edit_chess_data;
 	afx_msg void OnBnClickedButtonChatData();
 	afx_msg void OnBnClickedButtonClick();
+	bool ClearPiar();
+	afx_msg void OnBnClickedButtonSingle();
+	int m_p1x;
+	int m_p1y;
+	int m_p2x;
+	int m_p2y;
 };
