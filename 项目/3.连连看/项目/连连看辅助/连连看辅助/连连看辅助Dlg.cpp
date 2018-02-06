@@ -378,7 +378,7 @@ void C连连看辅助Dlg::OnBnClickedCheckCheckPlayGame()
 	UpdateData(true);//更新窗口内容至变量
 	if (m_autoplay)
 	{
-		SetTimer(PLAYID, 1500, &playproc);
+		SetTimer(PLAYID, 1, &playproc);
 	}
 	else
 	{
