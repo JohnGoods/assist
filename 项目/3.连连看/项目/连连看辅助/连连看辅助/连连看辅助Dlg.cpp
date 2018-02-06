@@ -272,7 +272,7 @@ bool C连连看辅助Dlg::ClearPiar() //消除一对棋子
 	for (x1 = 0; x1<19; x1++)
 	{
 		for (y2 = y1; y2<11; y2++)
-		for (x2 = x1; x2<19; x2++)
+		for (x2 = 0; x2<19; x2++)
 		if ((chessdata[y1][x1] == chessdata[y2][x2]) // 棋子1与棋子2 类型是否相同
 			&& (!((x1 == x2) && (y1 == y2)))  //要求点1与点2 相等则假
 			)
@@ -283,7 +283,7 @@ bool C连连看辅助Dlg::ClearPiar() //消除一对棋子
 			if (Check2p(p1, p2))//如果可消除 则返回真
 			{
 				//click2p 鼠标模拟 点击 p1，p2
-				click2p(p1, p2);
+				Click2p(p1, p2);
 				m_p1x = x1;
 				m_p1y = y1;
 				m_p2x = x2;

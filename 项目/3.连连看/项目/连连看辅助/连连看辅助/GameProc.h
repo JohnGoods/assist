@@ -344,6 +344,23 @@ bool click2p(POINT p1, POINT p2) //
 	return true;
 }
 
+bool Click2p(POINT p1, POINT p2)
+{
+	//点击p1
+	HWND hwnd = FindWindow(NULL, L"QQ游戏 - 连连看角色版");
+	int lparam;
+	lparam = ((p1.y * 35 + 192) << 16) + (p1.x * 31 + 21);
+	SendMessage(hwnd, WM_LBUTTONDOWN, 0, lparam);//
+	SendMessage(hwnd, WM_LBUTTONUP, 0, lparam);//
+	//点击p2
+	lparam = ((p2.y * 35 + 192) << 16) + (p2.x * 31 + 21);
+	SendMessage(hwnd, WM_LBUTTONDOWN, 0, lparam);//
+	SendMessage(hwnd, WM_LBUTTONUP, 0, lparam);//
+	return true;
+
+}
+
+
 //消除一对棋子
 //void ClearPiar()
 //{
