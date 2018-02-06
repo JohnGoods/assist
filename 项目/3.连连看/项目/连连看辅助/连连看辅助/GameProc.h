@@ -44,6 +44,28 @@ void updatdChess()
 	::ReadProcessMemory(processH, pbase, nbuffer, 11 * 19, &byread);
 }
 
+bool CheckLine(POINT p1, POINT p2) //检测2点间 是否连通（存在一条全为0的直线路径）
+{
+	int x, y;
+	if (p1.x == p2.x)
+	{
+		for (y = p1.y; y <= p2.y; y++)
+		{
+			//假如ChessData[y][p1.x] 大于0返回 false;
+			if (chessdata[y][p1.x]>0) return false;
+		}
+	}
+	else if (p1.y == p2.y)
+	{
+		for (x = p1.x; x <= p2.x; x++)
+		{//假如ChessData[p1.y][x] 大于0返回 false;
+			if (chessdata[p1.y][x]>0) return false;
+		}
+	}
+	return true;
+}
+
+
 bool lineNull(POINT p1, POINT p2)
 {
 	return true;
@@ -52,26 +74,37 @@ bool lineNull(POINT p1, POINT p2)
 //检测 p1,p2 2个棋子 是否可以消除
 bool check2p(POINT p1, POINT p2)
 { 
+	ChessPoint pa(p1), pb(p2);//初始化棋子类
+	POINT p11, p22;
+	int x, y;
+	//检测 p1,p2 2个棋子 是否可以消除
 	// Y坐标相同的情况下 p1,p2 
 	//lineNull(p1.right,p2.left) //可消除
 	if (p1.y == p2.y)
 	{
-		ChessPoint pa(p1), pb(p2);
 
-		if (lineNull(pa.down, pb.up)) return true;
+		if (CheckLine(pa.down, pb.up)) return true;
+		//pa,pb ; pa,p_1;pb,p_2;
+		p11 = p1; p22 = p2;
+		for (y = 0; y<11; y++)
+		{
+			p11.y = p22.y = y;
+			if (CheckLine(p11, p22) && CheckLine(pa.up, p11) && CheckLine(pb.up, p22))
+				return true;
+		}
+
 	}
 	//X坐标相同的情况下 p1,p2
 	//LineNull(p1.down,p2.up)    //可消除
 	if (p1.x == p2.x)
 	{
-		ChessPoint pa(p1), pb(p2);
 
-		if (lineNull(pa.down, pb.up)) return true;
+		if (CheckLine(pa.down, pb.up)) return true;
+		// //pa,pb ; pa,p_1;pb,p_2;
 	}
-
 	//X与Y坐标都不相情况下 p1,p2
-	//lineNull(p1.down,pa),LineNull(p2.down,pb),LineNull(pa,pb)
-	//可消除
+	//lineNull(p1.down,pa),LineNull(p2.down,pb),LineNull(pa,pb)//可消除
+
 	return true;
 }
 
