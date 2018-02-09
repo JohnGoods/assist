@@ -203,7 +203,7 @@ void C连连看辅助Dlg::OnBnClickedButtonSeat()
 	//3、OpenProcess              //打开指定进程
 	//4、ReadProcessMemory        //读指定进程 内存数据
 	//获取窗口句柄
-	HWND gameh = ::FindWindow(NULL, _T("QQ游戏 - 连连看角色版"));
+	HWND gameh = ::FindWindow(NULL, gameHandle);
 	//获取窗口进程ID
 	DWORD processid;
 	::GetWindowThreadProcessId(gameh, &processid);
@@ -211,18 +211,17 @@ void C连连看辅助Dlg::OnBnClickedButtonSeat()
 	HANDLE processH = ::OpenProcess(PROCESS_ALL_ACCESS, false, processid);
 	//读指定进程 内存数据
 	DWORD byread;
-	LPCVOID pbase = (LPCVOID)0x00171618;		//座位
+	LPCVOID pbase = (LPCVOID)SEAT_ADDRESS;		//座位
 	LPVOID  nbuffer = (LPVOID)&m_edit_seat;
 	::ReadProcessMemory(processH, pbase, nbuffer, 4, &byread);
 	UpdateData(false); //更新变量的值到 编辑框
 }
 
-//byte chessdata[11][19];//a[y][x]
 void C连连看辅助Dlg::OnBnClickedButtonChatData()
 {
 	// TODO: Add your control notification handler code here
 	//获取窗口句柄
-	HWND gameh = ::FindWindow(NULL, _T("QQ游戏 - 连连看角色版"));
+	HWND gameh = ::FindWindow(NULL, gameHandle);
 	//获取窗口进程ID
 	DWORD processid;
 	::GetWindowThreadProcessId(gameh, &processid);
@@ -230,7 +229,7 @@ void C连连看辅助Dlg::OnBnClickedButtonChatData()
 	HANDLE processH = ::OpenProcess(PROCESS_ALL_ACCESS, false, processid);
 	//读指定进程 内存数据
 	DWORD byread;
-	LPCVOID pbase = (LPCVOID)0x00189F78; //棋盘数据基址
+	LPCVOID pbase = (LPCVOID)CHESSBOARD_ADDRESS; //棋盘数据基址
 	LPVOID  nbuffer = (LPVOID)&chessdata;    //存放棋盘数据
 	::ReadProcessMemory(processH, pbase, nbuffer, 11 * 19, &byread);
 	///显示棋盘数据
@@ -254,14 +253,14 @@ void C连连看辅助Dlg::OnBnClickedButtonClick()
 {
 
 	int   x = 22, y = 187;
-	HWND hwnd = ::FindWindow(NULL, _T("QQ游戏 - 连连看角色版"));
+	HWND hwnd = ::FindWindow(NULL, gameHandle);
 	int lparam;
 	lparam = (y << 16) + x + 31 * 0;//表示指定格
 	::SendMessage(hwnd, WM_LBUTTONDOWN, 0, lparam);//
 	::SendMessage(hwnd, WM_LBUTTONUP, 0, lparam);  //
 }
 
-//bool C连连看辅助Dlg::ClearPiar() //消除一对棋子
+//bool C连连看辅助Dlg::ClearPiar() //把单消变量更新到变量中
 //{
 //	//读出棋盘数据至chessdata 11,19
 //	updatdChess();
@@ -297,37 +296,8 @@ void C连连看辅助Dlg::OnBnClickedButtonClick()
 //	return false;
 //}
 
-bool ClearPiar() //消除一对棋子
-{
-	//读出棋盘数据至chessdata 11,19
-	updatdChess();
-	//遍历整个棋盘 找出相同类型 一对棋子
-	POINT p1, p2;
-	int x1, y1, x2, y2;
-	for (y1 = 0; y1<11; y1++)
-	for (x1 = 0; x1<19; x1++)
-	{
-		for (y2 = y1; y2<11; y2++)
-		for (x2 = 0; x2<19; x2++)
-		if ((chessdata[y1][x1] == chessdata[y2][x2]) // 棋子1与棋子2 类型是否相同
-			&& (!((x1 == x2) && (y1 == y2)))  //要求点1与点2 相等则假
-			)
-		{
-			p1.x = x1; p1.y = y1;
-			p2.x = x2; p2.y = y2;
-			//检测 相同的2个棋子是否可消掉
-			if (Check2p(p1, p2))//如果可消除 则返回真
-			{
-				//click2p 鼠标模拟 点击 p1，p2
-				Click2p(p1, p2);
-				return true;
 
-			}
-		}
-	}
-	return false;
-}
-
+//单消按钮
 void C连连看辅助Dlg::OnBnClickedButtonSingle()
 {
 	// TODO:  在此添加控件通知处理程序代码
@@ -335,7 +305,7 @@ void C连连看辅助Dlg::OnBnClickedButtonSingle()
 }
 
 
-///////
+//自动游戏
 VOID CALLBACK playproc(
 	HWND hwnd,     // handle of window for timer messages
 	UINT uMsg,     // WM_TIMER message
@@ -345,6 +315,8 @@ VOID CALLBACK playproc(
 {
 	ClearPiar();
 }
+
+//自动准备
 VOID CALLBACK strartproc(
 	HWND hwnd,     // handle of window for timer messages
 	UINT uMsg,     // WM_TIMER message
