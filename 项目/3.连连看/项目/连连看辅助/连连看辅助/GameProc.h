@@ -7,7 +7,9 @@
 #define CHESSBOARD_ADDRESS 0x00189F78		//标题
 
 //游戏 功能函数
-
+RECT r1;
+POINT p;
+byte chessdata[11][19];//a[y][x]
 //获取游戏窗口句柄
 HWND getGameHWND(){
 	HWND game_hwnd = ::FindWindow(NULL, gameHandle);
@@ -31,8 +33,7 @@ HANDLE getGameProcessHandle(long address){
 	return processH;
 }
 
-RECT r1;
-POINT p;
+
 void startGame()
 {
 	//获取游戏窗口句柄
@@ -52,7 +53,7 @@ void startGame()
 	SetCursorPos(p.x, p.y);
 }
 
-byte chessdata[11][19];//a[y][x]
+
 //更新棋盘数据至 chessdata
 void updatdChess() 
 {
@@ -148,6 +149,9 @@ bool CheckLine(POINT p1, POINT p2)
 //	return true;
 //}
 
+
+
+
 //检测 a,b 2个棋子 是否可以消除
 bool Check2p(POINT a, POINT b)
 {
@@ -198,6 +202,7 @@ bool Check2p(POINT a, POINT b)
 		|			|
 		P1			p2
 		*/
+		//pa = a; pb = b;
 		//如果在最顶层是不能有路径去消除的 所以首先判断Y轴是不是在最顶层
 		if ((p1.up.y >= 0) && (p1.up.y <= 10)){
 			for (y = 0; y <= p1.up.y; y++)
@@ -217,6 +222,7 @@ bool Check2p(POINT a, POINT b)
 		|			|
 		-------------
 		*/
+		//pa = a; pb = b;
 		//如果在最底层是不能有路径去消除的 所以首先判断Y轴是不是在最底层
 		if ((p1.down.y >= 0) && (p1.down.y <= 10)){
 			//检查棋盘中 有三条直线没数据 那就是可以消除的
@@ -244,6 +250,7 @@ bool Check2p(POINT a, POINT b)
 
 		//检测 左右
 		//x左
+		//pa = a; pb = b;
 		for (x = 0; x <= p1.left.x; x++)
 		{
 			pa.x = x;
@@ -252,6 +259,7 @@ bool Check2p(POINT a, POINT b)
 		}
 
 		//x右
+		//pa = a; pb = b;
 		for (x = p1.right.x; x <= 18; x++)
 		{
 			pa.x = x;
@@ -411,8 +419,8 @@ bool ClearPiar()
 	//遍历整个棋盘 找出相同类型 一对棋子
 	POINT p1, p2;
 	int x1, y1, x2, y2;
-	for (y1 = 0; y1 < 19; y1++){
-		for (x1 = 0; x1 < 11; x1++){		//遍历棋盘
+	for (y1 = 0; y1 < 11; y1++){
+		for (x1 = 0; x1 < 19; x1++){		//遍历棋盘
 
 			for (y2 = y1; y2 < 11; y2++){
 				for (x2 = 0; x2 < 19; x2++){	//第二次遍历棋盘
