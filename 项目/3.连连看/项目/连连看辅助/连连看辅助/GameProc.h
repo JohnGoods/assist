@@ -250,6 +250,12 @@ bool Check2p(POINT a, POINT b)
 
 		//检测 左右
 		//x左
+		/*
+		-----p1
+		|
+		|
+		-----p2
+		*/
 		//pa = a; pb = b;
 		for (x = 0; x <= p1.left.x; x++)
 		{
@@ -259,6 +265,12 @@ bool Check2p(POINT a, POINT b)
 		}
 
 		//x右
+		/*
+		p1-----
+			   |
+			   |
+		p2-----
+		*/
 		//pa = a; pb = b;
 		for (x = p1.right.x; x <= 18; x++)
 		{
@@ -266,14 +278,22 @@ bool Check2p(POINT a, POINT b)
 			pb.x = x;
 			if (CheckLine(pa, p1.right) && CheckLine(pb, p2.right) && CheckLine(pa, pb))  { return true; }
 		}
-
 		//因为 y轴相等,所以不存在上下路径
 	}
 	////----------- 第三种情况(xy 坐标 都不相同) -----------
 	else{
 		//pa = a; pb = b;
-		if (a.x > b.x)  {   // p2点 在 左 left
+		//棋盘对应的位置b xxx a
+		//p2 比 p1 x小 就是说P2在左边 P1在右边
+		//(遍历棋盘数据)由于是从上向下 搜索 所以p1比p2高
+		if (a.x > b.x)  { 
 			////////////////xxxxxxxxxxxxxxxxx  找x轴路径
+			/*
+			----------p1
+			|
+			|
+			------p2
+			*/
 			for (x = 0; x <= p2.left.x; x++)
 			{
 				pa.x = x; pb.x = x;
@@ -281,15 +301,26 @@ bool Check2p(POINT a, POINT b)
 				{
 					return true;
 				}
-			} // end for
+			}
+			/*
+					-------p1
+				   |
+				   |
+			p2-----
+			*/
 			for (x = p2.right.x; x <= p1.left.x; x++)
 			{
 				pa.x = x; pb.x = x;
 				if (CheckLine(p2.right, pb) && CheckLine(pa, pb) && CheckLine(pa, p1.left))  {
 					return true;
 				}
-
 			}
+			/*
+				p1------
+					   |
+					   |
+			p2----------
+			*/
 			for (x = p2.right.x; x <= 18; x++)
 			{
 				pa.x = x; pb.x = x;
@@ -297,8 +328,18 @@ bool Check2p(POINT a, POINT b)
 					return true;
 				}
 			}
-			/////////////////yyyyyyyyyyyyyyyyyyyy 找y轴路径 由于是从上向下 搜索 所以p1.y>p2.y
+			/////////////////yyyyyyyyyyyyyyyyyyyy 找y轴路径 (遍历棋盘数据)由于是从上向下 搜索 所以p1比p2高
 			pa.x = a.x;   pb.x = b.x; //初始化坐标 y軕渐变
+
+			/*
+			---------
+			|		|
+			|		|
+			|		p1
+			|
+			|
+			p2
+			*/
 			for (y = 0; y <= p1.up.y; y++)    //1段
 			{
 				pa.y = y; pb.y = y;
@@ -306,7 +347,16 @@ bool Check2p(POINT a, POINT b)
 					return true;
 				}
 			}
-			////////////////////////
+
+			/*
+				   p1
+				   |
+				   |
+			 -------
+			|
+			|
+			p2
+			*/
 			for (y = p1.down.y; y <= p2.up.y; y++)//2段
 			{
 				pa.y = y; pb.y = y;
@@ -314,17 +364,38 @@ bool Check2p(POINT a, POINT b)
 					return true;
 				}
 			}
-			///////////////////////
+
+			/*
+					p1	
+					|
+			p2		|
+			|		|
+			|		|
+			|		|
+			---------
+
+			*/
 			for (y = p2.down.y; y <= 10; y++) //3段
 			{
-				///////////////////////////////
 				pa.y = y; pb.y = y;
-				if (CheckLine(pb, pa) && CheckLine(p1.down, pa) && CheckLine(p2.down, pb))   { return true; }
+				if (CheckLine(pb, pa) && CheckLine(p1.down, pa) && CheckLine(p2.down, pb))   { 
+					return true; 
+				}
 			}
 
 		}
-		else{////////////p2点  在 右 right a.x>b.x
+		//p2点  在 右 right a.x>b.x
+		//棋盘对应的位置a xxx b
+		//p1 比 p2 x小 就是说P1在左边 P2在右边
+		//(遍历棋盘数据)由于是从上向下 搜索 所以p1比p2高
+		else{
 			pa.y = a.y;   pb.y = b.y; //初始化坐标
+			/*
+			---	p1
+			|
+			|
+			--------p2
+			*/
 			for (x = 0; x <= p1.left.x; x++);
 			{
 				pa.x = x; pb.x = x;
@@ -332,7 +403,13 @@ bool Check2p(POINT a, POINT b)
 					return true;
 				}
 			}
-			/////////////////////
+
+			/*
+			p1---
+				|
+				|
+				--------p2
+			*/
 
 			for (x = p1.right.x; x <= p2.left.x; x++)
 			{
@@ -341,7 +418,13 @@ bool Check2p(POINT a, POINT b)
 					return true;
 				}
 			}
-			///////////////////////
+
+			/*
+			p1--------
+					 |
+					 |
+			   p2-----
+			*/
 
 			for (x = p2.right.x; x <= 18; x++)
 			{
@@ -350,8 +433,22 @@ bool Check2p(POINT a, POINT b)
 					return true;
 				}
 			}
-			///////////////////////yyyyyyyyyyyyyyyyyy   y轴渐变
+
+
+			//y轴渐变
 			pa.x = a.x;   pb.x = b.x; //初始化坐标
+
+			/*
+			
+			---------
+			|		|
+			|		|
+			p1		|
+					|
+					|
+					p2
+			*/
+
 			if ((p1.up.y >= 0) && (p1.up.y <= 10))
 			{
 				for (y = 0; y <= p1.up.y; y++)    //1段
@@ -362,7 +459,17 @@ bool Check2p(POINT a, POINT b)
 					}
 				}
 			}
-			//////
+			
+			/*
+			p1
+			|
+			|
+			---------
+					|
+					|
+					p2
+			*/
+
 			pa.x = a.x;   pb.x = b.x; //初始化坐标
 			if ((p1.down.y <= 10) && (p2.up.y >= 0))
 			{
@@ -374,20 +481,30 @@ bool Check2p(POINT a, POINT b)
 					}
 				}
 			}
-			////
+			
+			/*
+			p1
+			|
+			|
+			|		p2
+			|		|
+			|		|
+			---------
+			*/
+
 			pa.x = a.x;   pb.x = b.x; //初始化坐标
 			if (p2.down.y <= 10)
 			{
 				for (y = p2.down.y; y <= 10; y++)           //3段
 				{
 					pa.y = y; pb.y = y;
-					if (CheckLine(pa, pb) && CheckLine(p1.down, pa) && CheckLine(p2.down, pb))  { return true; }
-
+					if (CheckLine(pa, pb) && CheckLine(p1.down, pa) && CheckLine(p2.down, pb))  {
+						return true;
+					}
 				}
 			}
 		}
 	}
-	//xy 坐标 都不相同 }}}}}}}}}
 	return false;
 }
 
