@@ -24,12 +24,12 @@ DWORD getGameProcessId(){
 	return processid;
 }
 
-//读指定进程 内存数据
-HANDLE getGameProcessHandle(long address){
+
+HANDLE getGameProcessHandle(){
 	HWND game_hwnd = ::FindWindow(NULL, gameHandle);
 	DWORD processid;
 	::GetWindowThreadProcessId(game_hwnd, &processid);
-	HANDLE processH = ::OpenProcess(address, false, processid);
+	HANDLE processH = ::OpenProcess(PROCESS_ALL_ACCESS, false, processid);
 	return processH;
 }
 
@@ -58,7 +58,7 @@ void startGame()
 void updatdChess() 
 {
 	//读指定进程 内存数据
-	HANDLE processH = getGameProcessHandle(PROCESS_ALL_ACCESS);	//传基址就可以获取到指定进程 内存数据了
+	HANDLE processH = getGameProcessHandle();
 	DWORD byread;
 	LPCVOID pbase = (LPCVOID)CHESSBOARD_ADDRESS; //棋盘数据基址
 	LPVOID  nbuffer = (LPVOID)&chessdata;    //存放棋盘数据
