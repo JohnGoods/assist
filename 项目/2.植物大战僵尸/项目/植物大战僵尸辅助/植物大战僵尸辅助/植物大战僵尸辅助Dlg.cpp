@@ -172,7 +172,7 @@ BOOL C植物大战僵尸辅助Dlg::OnInitDialog()
 	pbox->AddString(_T("049 = 红色坚果"));
 	pbox->AddString(_T("050 = 巨大坚果"));
 	pbox->AddString(_T("051 = 小草"));
-	pbox->AddString(_T("052 = 反转射手?"));
+	pbox->AddString(_T("052 = 反转射手"));
 	pbox->SetCurSel(2);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -501,7 +501,6 @@ void C植物大战僵尸辅助Dlg::OnBnClickedButtonPlan()
 	////在目标进程 指定地址 执行代码
 	//TRACE("\n addr=%x \n", FarCall);
 	//CreateRemoteThread(hp, NULL, NULL, (LPTHREAD_START_ROUTINE)FarCall, NULL, NULL, NULL);
-
 }
 
 
@@ -528,7 +527,6 @@ void C植物大战僵尸辅助Dlg::OnBnClickedCheckWudi()
 	{
 		//无敌代码
 		WriteProcessMemory(hp, (PVOID)0x0054BA6A, a4, sizeof(a4), &bw);
-
 	}
 	else
 	{
