@@ -11,9 +11,30 @@
     <CheatEntry>
       <ID>1</ID>
       <Description>"棋盘数据"</Description>
-      <LastState Value="8" RealAddress="00189F78"/>
+      <LastState Value="0" RealAddress="00189F78"/>
       <VariableType>Byte</VariableType>
       <Address>00189F78</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"棋盘棋子1"</Description>
+      <LastState Value="0" RealAddress="00174DDC"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>00174DDC</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"棋盘棋子2"</Description>
+      <LastState Value="0" RealAddress="0018C738"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>0018C738</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>4</ID>
+      <Description>"倒计时"</Description>
+      <LastState Value="0" RealAddress="00176AC4"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>00176AC4</Address>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>
