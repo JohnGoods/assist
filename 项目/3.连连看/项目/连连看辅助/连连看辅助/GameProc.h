@@ -5,6 +5,7 @@
 #define gameHandle L"QQ游戏 - 连连看角色版"		//标题
 #define SEAT_ADDRESS 0x00171618		//座位基址
 #define CHESSBOARD_ADDRESS 0x00189F78		//标题
+bool gametop = false;
 
 //游戏 功能函数
 RECT r1;

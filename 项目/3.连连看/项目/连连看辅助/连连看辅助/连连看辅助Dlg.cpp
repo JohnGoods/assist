@@ -61,6 +61,7 @@ C连连看辅助Dlg::C连连看辅助Dlg(CWnd* pParent /*=NULL*/)
 	, m_autoplay(FALSE)
 	, m_autostart(FALSE)
 	, m_sliderenable(FALSE)
+	, m_gametop(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -81,6 +82,7 @@ void C连连看辅助Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SLIDER_SPEED, m_ctl_slider);
 	DDX_Control(pDX, IDC_CHECK_SPEED, m_ctl_check);
 	DDX_Check(pDX, IDC_CHECK_SPEED, m_sliderenable);
+	DDX_Check(pDX, IDC_CHECK_TOP, m_gametop);
 }
 
 BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
@@ -97,6 +99,7 @@ BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK_SPEED, &C连连看辅助Dlg::OnBnClickedCheckSpeed)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_SPEED, &C连连看辅助Dlg::OnNMCustomdrawSliderSpeed)
 	ON_BN_CLICKED(IDC_CHECK_TOP, &C连连看辅助Dlg::OnBnClickedCheckTop)
+	ON_BN_CLICKED(IDC_CHECK_TIME, &C连连看辅助Dlg::OnBnClickedCheckTime)
 END_MESSAGE_MAP()
 
 
@@ -338,12 +341,56 @@ VOID CALLBACK strartproc(
 {
 	HWND gameh = ::FindWindow(NULL, gameHandle);
 	if (gameh == 0) { return; } //没有找到游戏窗口
-	SetWindowPos(gameh, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+
+	if (gametop)
+	{
+		SetWindowPos(gameh, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	}
+	else
+	{
+		SetWindowPos(gameh, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+
+	}
+
+	//SetWindowPos(gameh, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 	startGame(); //自动开局
+}
+
+VOID CALLBACK topproc(
+	HWND hwnd,     // handle of window for timer messages
+	UINT uMsg,     // WM_TIMER message
+	UINT idEvent,  // timer identifier
+	DWORD dwTime   // current system time
+	)
+{
+	/*if (gametop && BST_CHECKED == IsDlgButtonChecked(NULL, IDC_CHECK_TOP)){
+		return;
+	}*/
+	gametop = false;
+	if (BST_CHECKED == IsDlgButtonChecked(NULL,IDC_CHECK_TOP))
+	{
+		gametop = true;
+	}
+
+	if (gametop)
+	{
+		HWND gameh = ::FindWindow(NULL, gameHandle);
+		if (gameh == 0) { return; } //没有找到游戏窗口
+		//让游戏窗口置顶
+		::SetWindowPos(gameh, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	}//窗口置顶
+	else
+	{
+		HWND gameh = ::FindWindow(NULL, gameHandle);
+		if (gameh == 0) { return; } //没有找到游戏窗口
+		//让游戏窗口置顶
+		::SetWindowPos(gameh, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	}//窗口置顶
 }
 
 const int PLAYID = 111;
 const int STARTID = 112;
+const int TOP = 113;
 
 //自动开局
 void C连连看辅助Dlg::OnBnClickedCheckCheckStart()
@@ -373,6 +420,57 @@ void C连连看辅助Dlg::OnBnClickedCheckCheckPlayGame()
 	}
 }
 
+//窗口顶置
+void C连连看辅助Dlg::OnBnClickedCheckTop()
+{
+	//更新窗口数据至变量
+	UpdateData(true);
+	if (m_gametop)
+	{
+		SetTimer(TOP, 1000, &topproc);
+	}
+	else
+	{
+		KillTimer(TOP);
+	}
+
+	//gametop = m_gametop;
+	//if (m_gametop)
+	//{
+	//	HWND gameh = ::FindWindow(NULL, gameHandle);
+	//	if (gameh == 0) { return; } //没有找到游戏窗口
+	//	//让游戏窗口置顶
+	//	::SetWindowPos(gameh, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	//}//窗口置顶
+	//else
+	//{
+	//	HWND gameh = ::FindWindow(NULL, gameHandle);
+	//	if (gameh == 0) { return; } //没有找到游戏窗口
+	//	//让游戏窗口置顶
+	//	::SetWindowPos(gameh, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	//}//窗口置顶
+}
+
+void CheckTop(){
+	//IDC_CHECK_TOP
+	HWND m_gametop = GetDlgItem(NULL,IDC_CHECK_TOP);
+	gametop = m_gametop;
+	if (m_gametop)
+	{
+		HWND gameh = ::FindWindow(NULL, gameHandle);
+		if (gameh == 0) { return; } //没有找到游戏窗口
+		//让游戏窗口置顶
+		::SetWindowPos(gameh, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	}//窗口置顶
+	else
+	{
+		HWND gameh = ::FindWindow(NULL, gameHandle);
+		if (gameh == 0) { return; } //没有找到游戏窗口
+		//让游戏窗口置顶
+		::SetWindowPos(gameh, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	}//窗口置顶
+}
+
 void C连连看辅助Dlg::OnBnClickedCheckSpeed()
 {
 	UpdateData(true);
@@ -388,8 +486,7 @@ void C连连看辅助Dlg::OnNMCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult)
 	OnBnClickedCheckCheckPlayGame();
 }
 
-
-void C连连看辅助Dlg::OnBnClickedCheckTop()
+void C连连看辅助Dlg::OnBnClickedCheckTime()
 {
-
+	// TODO:  在此添加控件通知处理程序代码
 }

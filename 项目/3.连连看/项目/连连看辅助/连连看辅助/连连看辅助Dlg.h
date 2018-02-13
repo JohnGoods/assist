@@ -56,4 +56,6 @@ public:
 	CSliderCtrl m_ctl_slider;
 	CButton m_ctl_check;
 	BOOL m_sliderenable;
+	afx_msg void OnBnClickedCheckTime();
+	BOOL m_gametop;
 };
