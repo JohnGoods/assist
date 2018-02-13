@@ -567,8 +567,7 @@ byte acode[6] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
 //byte oldcode[6]={0x90,0x90,0x90,0x90,0x90,0x90};
 bool ClearCode()
 {
-	HWND gameh = ::FindWindow(NULL, gameHandle);
-	//AfxMessageBox("Findwindow");
+	HWND gameh = getGameHWND();
 	if (gameh == 0) { return false; } //没有找到游戏窗口
 	DWORD pid;
 	::GetWindowThreadProcessId(gameh, &pid);

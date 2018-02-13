@@ -221,7 +221,7 @@ void C连连看辅助Dlg::OnBnClickedButtonSeat()
 	//3、OpenProcess              //打开指定进程
 	//4、ReadProcessMemory        //读指定进程 内存数据
 	//获取窗口句柄
-	HWND gameh = ::FindWindow(NULL, gameHandle);
+	HWND gameh = getGameHWND();
 	//获取窗口进程ID
 	DWORD processid;
 	::GetWindowThreadProcessId(gameh, &processid);
@@ -239,7 +239,7 @@ void C连连看辅助Dlg::OnBnClickedButtonChatData()
 {
 	// TODO: Add your control notification handler code here
 	//获取窗口句柄
-	HWND gameh = ::FindWindow(NULL, gameHandle);
+	HWND gameh = getGameHWND();
 	//获取窗口进程ID
 	DWORD processid;
 	::GetWindowThreadProcessId(gameh, &processid);
@@ -271,7 +271,7 @@ void C连连看辅助Dlg::OnBnClickedButtonClick()
 {
 
 	int   x = 22, y = 187;
-	HWND hwnd = ::FindWindow(NULL, gameHandle);
+	HWND hwnd = getGameHWND();
 	int lparam;
 	lparam = (y << 16) + x + 31 * 0;//表示指定格
 	::SendMessage(hwnd, WM_LBUTTONDOWN, 0, lparam);//
@@ -342,7 +342,7 @@ VOID CALLBACK strartproc(
 	DWORD dwTime   // current system time
 	)
 {
-	HWND gameh = ::FindWindow(NULL, gameHandle);
+	HWND gameh = getGameHWND();
 	if (gameh == 0) { return; } //没有找到游戏窗口
 
 	if (gametop)
@@ -377,14 +377,14 @@ VOID CALLBACK topproc(
 
 	if (gametop)
 	{
-		HWND gameh = ::FindWindow(NULL, gameHandle);
+		HWND gameh = getGameHWND();
 		if (gameh == 0) { return; } //没有找到游戏窗口
 		//让游戏窗口置顶
 		::SetWindowPos(gameh, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 	}//窗口置顶
 	else
 	{
-		HWND gameh = ::FindWindow(NULL, gameHandle);
+		HWND gameh = getGameHWND();
 		if (gameh == 0) { return; } //没有找到游戏窗口
 		//让游戏窗口置顶
 		::SetWindowPos(gameh, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
@@ -460,14 +460,14 @@ void CheckTop(){
 	gametop = m_gametop;
 	if (m_gametop)
 	{
-		HWND gameh = ::FindWindow(NULL, gameHandle);
+		HWND gameh = getGameHWND();
 		if (gameh == 0) { return; } //没有找到游戏窗口
 		//让游戏窗口置顶
 		::SetWindowPos(gameh, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 	}//窗口置顶
 	else
 	{
-		HWND gameh = ::FindWindow(NULL, gameHandle);
+		HWND gameh = getGameHWND();
 		if (gameh == 0) { return; } //没有找到游戏窗口
 		//让游戏窗口置顶
 		::SetWindowPos(gameh, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
