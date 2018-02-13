@@ -58,4 +58,6 @@ public:
 	BOOL m_sliderenable;
 	afx_msg void OnBnClickedCheckTime();
 	BOOL m_gametop;
+	BOOL m_check_time;
+	CButton m_ctl_cleartime;
 };

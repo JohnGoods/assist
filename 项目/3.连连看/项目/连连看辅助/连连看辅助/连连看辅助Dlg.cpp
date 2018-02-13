@@ -62,6 +62,7 @@ C连连看辅助Dlg::C连连看辅助Dlg(CWnd* pParent /*=NULL*/)
 	, m_autostart(FALSE)
 	, m_sliderenable(FALSE)
 	, m_gametop(FALSE)
+	, m_check_time(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -83,6 +84,8 @@ void C连连看辅助Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK_SPEED, m_ctl_check);
 	DDX_Check(pDX, IDC_CHECK_SPEED, m_sliderenable);
 	DDX_Check(pDX, IDC_CHECK_TOP, m_gametop);
+	DDX_Check(pDX, IDC_CHECK_TIME, m_check_time);
+	DDX_Control(pDX, IDC_CHECK_TIME, m_ctl_cleartime);
 }
 
 BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
@@ -488,5 +491,7 @@ void C连连看辅助Dlg::OnNMCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult)
 
 void C连连看辅助Dlg::OnBnClickedCheckTime()
 {
-	// TODO:  在此添加控件通知处理程序代码
+	UpdateData(true);
+	if (ClearCode()) { m_ctl_cleartime.EnableWindow(false); } //禁用它
+	else { m_ctl_cleartime.SetCheck(false); }
 }

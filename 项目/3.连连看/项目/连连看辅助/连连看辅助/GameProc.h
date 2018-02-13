@@ -5,6 +5,8 @@
 #define gameHandle L"QQ游戏 - 连连看角色版"		//标题
 #define SEAT_ADDRESS 0x00171618		//座位基址
 #define CHESSBOARD_ADDRESS 0x00189F78		//标题
+#define COUNT_DOWN_TIME_ADDRESS 0x0041DE8D		//标题
+
 bool gametop = false;
 
 //游戏 功能函数
@@ -559,4 +561,19 @@ bool ClearPiar()
 		}
 	}
 	return false;
+}
+
+byte acode[6] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+//byte oldcode[6]={0x90,0x90,0x90,0x90,0x90,0x90};
+bool ClearCode()
+{
+	HWND gameh = ::FindWindow(NULL, gameHandle);
+	//AfxMessageBox("Findwindow");
+	if (gameh == 0) { return false; } //没有找到游戏窗口
+	DWORD pid;
+	::GetWindowThreadProcessId(gameh, &pid);
+	long byWriteSize;
+	HANDLE hp = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
+	WriteProcessMemory(hp, (LPVOID)(COUNT_DOWN_TIME_ADDRESS), (LPVOID)(acode), 6, (LPDWORD)(&byWriteSize));
+	return true;
 }
