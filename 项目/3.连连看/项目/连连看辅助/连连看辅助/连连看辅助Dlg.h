@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "afxcmn.h"
+#include "afxwin.h"
 
 
 // C连连看辅助Dlg 对话框
@@ -48,4 +50,10 @@ public:
 	afx_msg void OnBnClickedCheckCheckPlayGame();
 	BOOL m_autoplay;
 	BOOL m_autostart;
+	afx_msg void OnBnClickedCheckSpeed();
+	afx_msg void OnNMCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedCheckTop();
+	CSliderCtrl m_ctl_slider;
+	CButton m_ctl_check;
+	BOOL m_sliderenable;
 };

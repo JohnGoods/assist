@@ -60,6 +60,7 @@ C连连看辅助Dlg::C连连看辅助Dlg(CWnd* pParent /*=NULL*/)
 	, m_p2y(0)
 	, m_autoplay(FALSE)
 	, m_autostart(FALSE)
+	, m_sliderenable(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -77,6 +78,9 @@ void C连连看辅助Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT4, m_p2y);
 	DDX_Check(pDX, IDC_CHECK_CHECK_PLAY_GAME, m_autoplay);
 	DDX_Check(pDX, IDC_CHECK_CHECK_START, m_autostart);
+	DDX_Control(pDX, IDC_SLIDER_SPEED, m_ctl_slider);
+	DDX_Control(pDX, IDC_CHECK_SPEED, m_ctl_check);
+	DDX_Check(pDX, IDC_CHECK_SPEED, m_sliderenable);
 }
 
 BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
@@ -90,6 +94,9 @@ BEGIN_MESSAGE_MAP(C连连看辅助Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SINGLE, &C连连看辅助Dlg::OnBnClickedButtonSingle)
 	ON_BN_CLICKED(IDC_CHECK_CHECK_START, &C连连看辅助Dlg::OnBnClickedCheckCheckStart)
 	ON_BN_CLICKED(IDC_CHECK_CHECK_PLAY_GAME, &C连连看辅助Dlg::OnBnClickedCheckCheckPlayGame)
+	ON_BN_CLICKED(IDC_CHECK_SPEED, &C连连看辅助Dlg::OnBnClickedCheckSpeed)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_SPEED, &C连连看辅助Dlg::OnNMCustomdrawSliderSpeed)
+	ON_BN_CLICKED(IDC_CHECK_TOP, &C连连看辅助Dlg::OnBnClickedCheckTop)
 END_MESSAGE_MAP()
 
 
@@ -125,6 +132,11 @@ BOOL C连连看辅助Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
+	MoveWindow(0, 0, 330, 200, true);
+	this->m_ctl_slider.SetRange(50, 3000);
+	this->m_ctl_slider.SetTicFreq(150);
+	this->m_ctl_slider.SetPos(1000);
+	this->m_ctl_check.SetCheck(true);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -324,6 +336,9 @@ VOID CALLBACK strartproc(
 	DWORD dwTime   // current system time
 	)
 {
+	HWND gameh = ::FindWindow(NULL, gameHandle);
+	if (gameh == 0) { return; } //没有找到游戏窗口
+	SetWindowPos(gameh, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 	startGame(); //自动开局
 }
 
@@ -350,10 +365,31 @@ void C连连看辅助Dlg::OnBnClickedCheckCheckPlayGame()
 	UpdateData(true);//更新窗口内容至变量
 	if (m_autoplay)
 	{
-		SetTimer(PLAYID, 1, &playproc);
+		SetTimer(PLAYID, this->m_ctl_slider.GetPos(), &playproc);
 	}
 	else
 	{
 		KillTimer(PLAYID);
 	}
+}
+
+void C连连看辅助Dlg::OnBnClickedCheckSpeed()
+{
+	UpdateData(true);
+	::EnableWindow(m_ctl_slider.m_hWnd, m_sliderenable);
+}
+
+
+void C连连看辅助Dlg::OnNMCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	*pResult = 0;
+	//拖动都帮它更新吧
+	OnBnClickedCheckCheckPlayGame();
+}
+
+
+void C连连看辅助Dlg::OnBnClickedCheckTop()
+{
+
 }
